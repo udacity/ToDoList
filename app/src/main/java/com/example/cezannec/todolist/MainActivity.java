@@ -145,10 +145,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    // sorting button function
     public void onClickSort(View view) {
 
         isSorted = true;
 
+        //TODO: sorting by priority - can have them test out different ways to sort
         String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
         //System.out.println("Sort id = " + sortId);
 
@@ -161,6 +163,37 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 sortId);
 
         rAdapter.swapCursor(c);
+    }
+
+
+    // playing around with cursor display and selection args
+    public void onClickSelection(View view) {
+
+        // create 1) selection clause and 2) corresponding args - choosing one row
+
+        // Defines a string to contain the selection clause
+        String mSelectionClause = null;
+
+        // Initializes an array to contain selection arguments
+        // defines a one element String array to contain the selection argument
+        String[] mSelectionArgs = {""};
+
+        mSelectionClause = TaskContract.ItemEntry.COLUMN_PRIORITY + " = ?";
+
+        // what row of priority do you want to select?
+        //TODO: add this as an input parameter
+        mSelectionArgs[0] = "1";
+
+        //actually do something with those selection args (query then update)
+        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                null,
+                mSelectionClause,
+                mSelectionArgs,
+                null);
+
+        rAdapter.swapCursor(c);
+
+
     }
 
 

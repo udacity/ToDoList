@@ -65,6 +65,14 @@
         android:text="Sort"
         android:onClick="onClickSort"/>
 
+    <!-- testing how selections work in cursors -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Select Priority 1"
+        android:onClick="onClickSelection"/>
+
     <!-- is it both match parent?-->
     <!-- omg it should def be match_parent -_- after watching a tiny scroll screen -->
 
