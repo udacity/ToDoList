@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context="com.example.cezannec.todolist.MainActivity">
+    <!-- layout height above should be wrap content, so that the items aren't SO spaced out -->
+
+    <!--set visible if COLUMN_PRIORITY = 1,2,3 (not 0) in adapter -->
+    <TextView
+        android:id="@+id/androidPriorityText"
+        android:textColor="#008000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"/>
+
+
+    <TextView
+        android:id="@+id/taskTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp" />
+    <!-- paddingTop = a little bit of spacing between views -->
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:layout_gravity="right"/>
+
+
+
+</LinearLayout>
