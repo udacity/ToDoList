@@ -58,6 +58,13 @@
         android:onClick="onClickAddTask"
         android:text="+ Add Task" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Sort"
+        android:onClick="onClickSort"/>
+
     <!-- is it both match parent?-->
     <!-- omg it should def be match_parent -_- after watching a tiny scroll screen -->
 

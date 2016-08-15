@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     //need to create custom adapter class first
     private CustomCursorAdapter rAdapter;
 
+    private boolean isSorted; //initialized as false
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 getContentResolver().delete(uri, null, null);
 
-                //update cursor
-                Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+                Cursor c;
+                if(isSorted) {
+                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
+                            TaskContract.ItemEntry.COLUMN_PRIORITY);
+
+                } else {
+                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+                }
                 rAdapter.swapCursor(c);
             }
         }).attachToRecyclerView(recView);
@@ -93,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         contentValues.put(TaskContract.ItemEntry.COLUMN_TASKTITLE,
                 ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
 
-        int checked = 0; // init to 0 -- 3 to mark priority of tasks
+        int checked = 4; // init to 4, so it's lower priority than the rest of the tasks
+        //1-3 = high to low priorities
         if(((RadioButton) findViewById(R.id.firstButton)).isChecked()){
             checked = 1;
         } else if(((RadioButton) findViewById(R.id.secondButton)).isChecked()){
@@ -106,6 +115,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // insert values through content resolver
         Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
+
+        //update cursor
+        Cursor c;
+        if(isSorted) {
+            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
+                    TaskContract.ItemEntry.COLUMN_PRIORITY);
+
+        } else {
+            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+        }
+        rAdapter.swapCursor(c);
+
         // show the uri that the inserted entry is in
         Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
 
@@ -122,6 +143,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //handle if a radio button is checked
         System.out.println("Clicked!");
 
+    }
+
+    public void onClickSort(View view) {
+
+        isSorted = true;
+
+        String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
+        //System.out.println("Sort id = " + sortId);
+
+        //query the content provider for a new sorted cursor
+        //should auto update bc of loader?
+        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                null,
+                null,
+                null /* selection args need to test */,
+                sortId);
+
+        rAdapter.swapCursor(c);
     }
 
 

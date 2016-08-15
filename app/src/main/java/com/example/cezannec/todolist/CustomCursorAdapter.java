@@ -81,7 +81,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
             holder.itemView.setBackgroundColor(0x2600FF00);
         } else {
-            //priority == 0, none was selected
+            //priority == 4, no priority was selected so this has lowest priority
             holder.priorityView.setVisibility(View.GONE);
 
             // light gray default
