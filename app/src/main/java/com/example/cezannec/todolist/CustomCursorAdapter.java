@@ -1,11 +1,13 @@
 package com.example.cezannec.todolist;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cezannec.todolist.data.TaskContract;
@@ -59,21 +61,31 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         if(priority == 1){
             //p1
             holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!!");
-            holder.priorityView.setTextColor(0xffff0000); // red
+            holder.priorityView.setText("!");
+            holder.priorityView.setTextColor(0xFFFF0000); // red
+
+            //26 transparency
+            holder.itemView.setBackgroundColor(0x26FF0000);
         } else if(priority == 2) {
             //p2
             holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!!");
-            holder.priorityView.setTextColor(0xffffff00); //yellow
+            holder.priorityView.setText("!");
+            holder.priorityView.setTextColor(0xFFFFFF00); //yellow
+
+            holder.itemView.setBackgroundColor(0x26FFFF00);
         } else if(priority == 3) {
         //p3
             holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!!");
-            holder.priorityView.setTextColor(0xff00ff00); //green
+            holder.priorityView.setText("!");
+            holder.priorityView.setTextColor(0xFF00FF00); //green
+
+            holder.itemView.setBackgroundColor(0x2600FF00);
         } else {
             //priority == 0, none was selected
             holder.priorityView.setVisibility(View.GONE);
+
+            // light gray default
+            holder.itemView.setBackgroundColor(0x26D3D3D3);
         }
 
     }
@@ -125,6 +137,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
             // create constructor and initialize views
             titleView = (TextView) itemView.findViewById(R.id.taskTitle);
             priorityView = (TextView) itemView.findViewById(R.id.androidPriorityText);
+
+
         }
 
     }
