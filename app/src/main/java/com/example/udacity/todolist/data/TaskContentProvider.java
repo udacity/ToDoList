@@ -9,39 +9,50 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public class TaskContentProvider extends ContentProvider {
-    //authority
-    private static final String AUTHORITY = TaskContract.AUTHORITY;
+
+    public static final Uri CONTENT_URI = TaskContract.ItemEntry.CONTENT_URI; //public to access in main
 
 
     //1. Define URIs - what information do you want to access/display?
-    //content uri, should this be in Contract?
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TaskContract.PATH_TASKS); // public -- to access in Main
-    // one for the whole table
-    // one for a row (in this case data about one task)
-    // make a note: match Sunshine
-    private static final int TASKS = 1;
-    private static final int ONE_TASK = 2;
-    private static final UriMatcher uriMatcher = getUriMatcher();
 
+    /* one for the whole table
+    one for a row (in this case a row that contains data about one task)
+    make a note: match Sunshine - these ints can be any value
+    convention is: if you have a main table, yu call it 100,
+    and for multiple uri's in that table, do 101, 102, 103...
+     */
+    private static final int TASKS = 100;
+    private static final int ONE_TASK = 101;
 
-    //2. Build the URI matcher - based on the URI int's above!
+    //Uri matcher that we construct
+    private static final UriMatcher uriMatcher = buildUriMatcher();
+
     //4.1 declare database so you can access it throughout (initialized in onCreate() )
-    private TaskDbHelper taskDb = null;
+    private TaskDbHelper taskDb;
+
 
     public TaskContentProvider() {
     }
 
-    // 2 (continued)
-    private static UriMatcher getUriMatcher() {
+    // 2 Build the URI matcher - based on the URI int's you declared above!
+
+    private static UriMatcher buildUriMatcher() {
+
+        // All paths added to the UriMatcher have a corresponding code to return when a match is
+        // found.  The code passed into the constructor represents the code to return for the root
+        // URI.  It's common to use NO_MATCH as the code for this case.
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, TaskContract.PATH_TASKS, TASKS);
-        uriMatcher.addURI(AUTHORITY, TaskContract.PATH_TASKS+ "/#", ONE_TASK);
+
+        // For each kind of uri you may want to access, add the corresponding match code
+        // addUri(authority, path, int match code)
+        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS, TASKS);
+        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS+ "/#", ONE_TASK);
         return uriMatcher;
     }
 
 
-    //(optional step --pre-3) getType
-    // using URI matching (THIS IS NOT GOING TO BE USED IN SUNSHINE, so I can leave this method empty)
+    //3. Implement getType
+    // using URI matching (not used; will provide this method to the student)
     @Override
     public String getType(Uri uri) {
         // TODO: Implement this to handle requests for the MIME type of the data
@@ -85,7 +96,9 @@ public class TaskContentProvider extends ContentProvider {
             case TASKS: id = null;
                 break;
             case ONE_TASK:
-                //this is for the data for one task; get that row data from the URI's ID!
+                //get(1) returns  the path segment of the uri with index = 1
+                // in this case: content://com.example.udacity.todolist/tasks/#
+                // tasks is at index 0, the # which is the row, is at index 1
                 id = uri.getPathSegments().get(1);
                 break;
             default:
@@ -113,6 +126,7 @@ public class TaskContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case TASKS:
                 long id = taskDb.addNewTask(values);
+                // sunshine uses a helper build uri method for the line below, hmm
                 returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
 
                 break;
