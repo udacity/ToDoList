@@ -15,7 +15,7 @@ public class TaskContentProvider extends ContentProvider {
 
     //1. Define URIs - what information do you want to access/display?
     //content uri, should this be in Contract?
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/tasks"); // public -- to access in Main
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TaskContract.PATH_TASKS); // public -- to access in Main
     // one for the whole table
     // one for a row (in this case data about one task)
     // make a note: match Sunshine
@@ -34,8 +34,8 @@ public class TaskContentProvider extends ContentProvider {
     // 2 (continued)
     private static UriMatcher getUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, "tasks", TASKS);
-        uriMatcher.addURI(AUTHORITY, "tasks/#", ONE_TASK);
+        uriMatcher.addURI(AUTHORITY, TaskContract.PATH_TASKS, TASKS);
+        uriMatcher.addURI(AUTHORITY, TaskContract.PATH_TASKS+ "/#", ONE_TASK);
         return uriMatcher;
     }
 
@@ -49,9 +49,9 @@ public class TaskContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case TASKS:
-                return "vnd.android.cursor.dir/vnd.com.example.udacity.todolist.tasks";
+                return TaskContract.ItemEntry.CONTENT_TYPE;
             case ONE_TASK:
-                return "vnd.android.cursor.item/vnd.com.example.udacity.todolist.tasks";
+                return TaskContract.ItemEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Uri match not recognized!");
                 //throw new UnsupportedOperationException("Not yet implemented");
@@ -132,18 +132,24 @@ public class TaskContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Implement this to handle requests to delete one or more rows.
         //throw new UnsupportedOperationException("Not yet implemented");
-        String id = null;
 
         // keep track of if tasks are indeed deleted
-        int tasksDeleted; // init as 0
+        int tasksDeleted = 0; // init as 0
 
-        if (uriMatcher.match(uri) == ONE_TASK) {
-            //Delete is for one single task. Get the ID from the URI. -- one row!
-            id = uri.getPathSegments().get(1);
-            System.out.println("ID path segment in provider = " + id);
+        String id;
+
+        switch (uriMatcher.match(uri)) {
+            case TASKS: id = null;
+                break;
+            case ONE_TASK:
+                //delete a single task b getting the id
+                id = uri.getPathSegments().get(1);
+                tasksDeleted = taskDb.deleteTask(id);
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri match not recognized!");
         }
 
-        tasksDeleted = taskDb.deleteTask(id);
         if(tasksDeleted != 0){
             //a task was deleted
             //Notify
@@ -160,17 +166,24 @@ public class TaskContentProvider extends ContentProvider {
                       String[] selectionArgs) {
         // TODO: Implement this to handle requests to update one or more rows.
         //throw new UnsupportedOperationException("Not yet implemented");
-        String id = null;
 
         //keep track of if an update occurs
-        int tasksUpdated;
+        int tasksUpdated = 0;
 
-        if (uriMatcher.match(uri) == ONE_TASK) {
-            //Update is for one single task. Get the ID from the URI.
-            id = uri.getPathSegments().get(1);
+        String id;
+
+        switch (uriMatcher.match(uri)) {
+            case TASKS: id = null;
+                break;
+            case ONE_TASK:
+                //delete a single task b getting the id
+                id = uri.getPathSegments().get(1);
+                tasksUpdated = taskDb.updateTasks(id, values);
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri match not recognized!");
         }
 
-        tasksUpdated = taskDb.updateTasks(id, values);
         if(tasksUpdated != 0){
             //Notify
             getContext().getContentResolver().notifyChange(uri, null);

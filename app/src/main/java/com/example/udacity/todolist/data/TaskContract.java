@@ -19,7 +19,7 @@ public class TaskContract {
     //3. Define the possible paths for accessing data in this contract
     // Possible paths usually point to different tables in here
 
-    public static final String PATH_QUEUE = "tasks"; // it even matches the name of the table!
+    public static final String PATH_TASKS = "tasks"; // it even matches the name of the table!
 
 
     //total projection for getting a complete Cursor (for RecyclerView later)
@@ -41,7 +41,7 @@ public class TaskContract {
         public static final Uri CONTENT_URI =
                 Uri.withAppendedPath(
                         TaskContract.BASE_CONTENT_URI,
-                        PATH_QUEUE
+                        PATH_TASKS
                 );
 
         //Next specify the types of data that can be accessed --
@@ -53,9 +53,9 @@ public class TaskContract {
 
         // might not use these mime types
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_QUEUE;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_QUEUE;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
 
 
         public static final String TABLE_NAME = "tasks";

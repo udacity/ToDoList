@@ -60,18 +60,15 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         switch(priority) {
             case 1: //p1
                 holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("!!");
-                holder.priorityView.setTextColor(0xFFFF0000); // red
+                holder.priorityView.setText("[P1]");
                 break;
             case 2: //p2
                 holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("!");
-                holder.priorityView.setTextColor(0xFFFFFF00); //yellow
+                holder.priorityView.setText("[P2]");
                 break;
             case 3: //p3
                 holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("*");
-                holder.priorityView.setTextColor(0xFF00FF00); //green
+                holder.priorityView.setText("[P3]");
                 break;
             default: //priority == 4, no priority was selected so this has lowest priority
                 holder.priorityView.setVisibility(View.GONE);
