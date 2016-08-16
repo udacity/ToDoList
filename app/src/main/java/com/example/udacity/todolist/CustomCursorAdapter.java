@@ -1,16 +1,14 @@
-package com.example.cezannec.todolist;
+package com.example.udacity.todolist;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.cezannec.todolist.data.TaskContract;
+import com.example.udacity.todolist.data.TaskContract;
 
 /**
  * Created by cezannec on 8/13/16.
@@ -43,7 +41,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         // index of the ID column, title, author (0, 1, 2 -- autoincrement)
         int idIndex = mCursor.getColumnIndex(TaskContract.ItemEntry._ID);
-        int titleIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_TASKTITLE);
+        int titleIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_TASK_TITLE);
         int priorityIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_PRIORITY);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
@@ -58,34 +56,26 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         holder.titleView.setText(title);
 
         //handle visibility and priority markers
-        if(priority == 1){
-            //p1
-            holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!");
-            holder.priorityView.setTextColor(0xFFFF0000); // red
 
-            //26 transparency
-            holder.itemView.setBackgroundColor(0x26FF0000);
-        } else if(priority == 2) {
-            //p2
-            holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!");
-            holder.priorityView.setTextColor(0xFFFFFF00); //yellow
-
-            holder.itemView.setBackgroundColor(0x26FFFF00);
-        } else if(priority == 3) {
-        //p3
-            holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText("!");
-            holder.priorityView.setTextColor(0xFF00FF00); //green
-
-            holder.itemView.setBackgroundColor(0x2600FF00);
-        } else {
-            //priority == 4, no priority was selected so this has lowest priority
-            holder.priorityView.setVisibility(View.GONE);
-
-            // light gray default
-            holder.itemView.setBackgroundColor(0x26D3D3D3);
+        switch(priority) {
+            case 1: //p1
+                holder.priorityView.setVisibility(View.VISIBLE);
+                holder.priorityView.setText("!!");
+                holder.priorityView.setTextColor(0xFFFF0000); // red
+                break;
+            case 2: //p2
+                holder.priorityView.setVisibility(View.VISIBLE);
+                holder.priorityView.setText("!");
+                holder.priorityView.setTextColor(0xFFFFFF00); //yellow
+                break;
+            case 3: //p3
+                holder.priorityView.setVisibility(View.VISIBLE);
+                holder.priorityView.setText("*");
+                holder.priorityView.setTextColor(0xFF00FF00); //green
+                break;
+            default: //priority == 4, no priority was selected so this has lowest priority
+                holder.priorityView.setVisibility(View.GONE);
+                break;
         }
 
     }
@@ -100,8 +90,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return mCursor.getCount();
     }
 
-    // helper method for swapCursor
-    private Cursor privateSwapCursor(Cursor c) {
+    // helper method for changeCursor
+    private Cursor swapCursor(Cursor c) {
         // check if this cursor is the same as the previous cursor (mCursor)
         if (mCursor == c) {
             return null; // bc nothing has changed
@@ -118,9 +108,11 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
     //The real swapCursor - swaps AND closes the cursor
     // uses private swap cursor and then closes the cursor, is this necessary??
-    public void swapCursor(Cursor c) {
+
+    //change
+    public void changeCursor(Cursor c) {
         //swap!
-        Cursor temp = privateSwapCursor(c);
+        Cursor temp = swapCursor(c);
         if (temp != null) {
             temp.close(); // then close the old cursor if it exists (unnecessary clean up?)
         }

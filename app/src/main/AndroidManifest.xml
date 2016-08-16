@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cezannec.todolist">
+    package="com.example.udacity.todolist">
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.udacity.todolist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +20,8 @@
         <!-- Make sure it's INSIDE the application tag -->
 
         <provider
-            android:name="com.example.cezannec.todolist.data.TaskContentProvider"
-            android:authorities="com.example.cezannec.todolist"
+            android:name="com.example.udacity.todolist.data.TaskContentProvider"
+            android:authorities="com.example.udacity.todolist"
             android:enabled="true"
             android:exported="true" />
     </application>

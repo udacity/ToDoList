@@ -1,4 +1,4 @@
-package com.example.cezannec.todolist.data;
+package com.example.udacity.todolist.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -18,6 +18,7 @@ public class TaskContentProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/tasks"); // public -- to access in Main
     // one for the whole table
     // one for a row (in this case data about one task)
+    // make a note: match Sunshine
     private static final int TASKS = 1;
     private static final int ONE_TASK = 2;
     private static final UriMatcher uriMatcher = getUriMatcher();
@@ -48,9 +49,9 @@ public class TaskContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case TASKS:
-                return "vnd.android.cursor.dir/vnd.com.example.cezannec.todolist.tasks";
+                return "vnd.android.cursor.dir/vnd.com.example.udacity.todolist.tasks";
             case ONE_TASK:
-                return "vnd.android.cursor.item/vnd.com.example.cezannec.todolist.tasks";
+                return "vnd.android.cursor.item/vnd.com.example.udacity.todolist.tasks";
             default:
                 throw new UnsupportedOperationException("Uri match not recognized!");
                 //throw new UnsupportedOperationException("Not yet implemented");
@@ -77,12 +78,19 @@ public class TaskContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         // TODO: Implement this to handle query requests from clients.
-        String id = null;
-        if (uriMatcher.match(uri) == ONE_TASK) {
-            //this is for the data for one book; get that row data from the URI's ID!
-            id = uri.getPathSegments().get(1);
-        }
 
+        String id;
+
+        switch (uriMatcher.match(uri)) {
+            case TASKS: id = null;
+                break;
+            case ONE_TASK:
+                //this is for the data for one task; get that row data from the URI's ID!
+                id = uri.getPathSegments().get(1);
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri match not recognized!");
+        }
         //NOTIFICATION and return cursor
         Cursor c = taskDb.getTasks(id, projection, selection, selectionArgs, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
@@ -98,16 +106,25 @@ public class TaskContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         // TODO: Implement this to handle requests to insert a new row.
         //throw new UnsupportedOperationException("Not yet implemented");
+        // check uri for validity
 
-        try {
-            long id = taskDb.addNewTask(values);
-            Uri returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
-            //Notify
-            getContext().getContentResolver().notifyChange(uri, null);
-            return returnUri;
-        } catch (Exception e) {
-            return null;
+        Uri returnUri; // to be returned
+
+        switch (uriMatcher.match(uri)) {
+            case TASKS:
+                long id = taskDb.addNewTask(values);
+                returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
+
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri match not recognized!");
         }
+        //Notify
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        // return constructed uri
+        return returnUri;
+
     }
 
     // 7. Implement delete (if you want?)

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    tools:context="com.example.cezannec.todolist.MainActivity">
+    tools:context="com.example.udacity.todolist.MainActivity">
     <!-- layout height above should be wrap content, so that the items aren't SO spaced out -->
 
     <!--set visible if COLUMN_PRIORITY = 1,2,3 (not 0) in adapter -->

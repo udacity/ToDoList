@@ -1,4 +1,4 @@
-package com.example.cezannec.todolist;
+package com.example.udacity.todolist;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -17,8 +17,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.cezannec.todolist.data.TaskContentProvider;
-import com.example.cezannec.todolist.data.TaskContract;
+import com.example.udacity.todolist.data.TaskContentProvider;
+import com.example.udacity.todolist.data.TaskContract;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 } else {
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
                 }
-                rAdapter.swapCursor(c);
+                rAdapter.changeCursor(c);
             }
         }).attachToRecyclerView(recView);
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onClickAddTask(View view) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(TaskContract.ItemEntry.COLUMN_TASKTITLE,
+        contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_TITLE,
                 ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
 
         int checked = 4; // init to 4, so it's lower priority than the rest of the tasks
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
         }
-        rAdapter.swapCursor(c);
+        rAdapter.changeCursor(c);
 
         // show the uri that the inserted entry is in
         Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
@@ -162,14 +162,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null /* selection args need to test */,
                 sortId);
 
-        rAdapter.swapCursor(c);
+        rAdapter.changeCursor(c);
     }
 
 
     // playing around with cursor display and selection args
+    /*
     public void onClickSelection(View view) {
 
-        // create 1) selection clause and 2) corresponding args - choosing one row
+        // create 1) selection clause and 2) corresponding args
+        // this lets you choose rows based on a selection criteria
 
         // Defines a string to contain the selection clause
         String mSelectionClause = null;
@@ -181,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mSelectionClause = TaskContract.ItemEntry.COLUMN_PRIORITY + " = ?";
 
         // what row of priority do you want to select?
-        //TODO: add this as an input parameter
+
+        //Could add this as an input parameter
         mSelectionArgs[0] = "1";
 
         //actually do something with those selection args (query then update)
@@ -191,11 +194,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mSelectionArgs,
                 null);
 
-        rAdapter.swapCursor(c);
+        rAdapter.changeCursor(c);
 
 
     }
-
+    */
 
 
 
@@ -220,14 +223,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //adapter..
-        rAdapter.swapCursor(data);
+        rAdapter.changeCursor(data);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        rAdapter.swapCursor(null);
+        rAdapter.changeCursor(null);
 
     }
 }

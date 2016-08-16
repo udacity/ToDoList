@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
     defaultConfig {
-        applicationId "com.example.cezannec.todolist"
+        applicationId "com.example.udacity.todolist"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

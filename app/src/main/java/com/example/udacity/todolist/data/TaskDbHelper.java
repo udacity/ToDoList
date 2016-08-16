@@ -1,4 +1,4 @@
-package com.example.cezannec.todolist.data;
+package com.example.udacity.todolist.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,7 +24,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     TaskContract.ItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TaskContract.ItemEntry.COLUMN_TASKTITLE + " TEXT NOT NULL, " +
+                    TaskContract.ItemEntry.COLUMN_TASK_TITLE + " TEXT NOT NULL, " +
                     TaskContract.ItemEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);";
 
 

@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.cezannec.todolist.MainActivity">
+    tools:context="com.example.udacity.todolist.MainActivity">
 
     <EditText
         android:id="@+id/editTextTaskTitle"
@@ -58,6 +58,7 @@
         android:onClick="onClickAddTask"
         android:text="+ Add Task" />
 
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,13 +66,13 @@
         android:text="Sort"
         android:onClick="onClickSort"/>
 
-    <!-- testing how selections work in cursors -->
-    <Button
+    <!-- testing how selections work in cursors (Choosing to leave out for now) -->
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Select Priority 1"
-        android:onClick="onClickSelection"/>
+        android:onClick="onClickSelection"/>-->
 
     <!-- is it both match parent?-->
     <!-- omg it should def be match_parent -_- after watching a tiny scroll screen -->

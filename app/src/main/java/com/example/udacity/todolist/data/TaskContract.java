@@ -1,4 +1,4 @@
-package com.example.cezannec.todolist.data;
+package com.example.udacity.todolist.data;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -11,7 +11,7 @@ public class TaskContract {
     // So... provide the content URI's for each table
 
     //1. Specify the authority, which is how your code knows which Content Provider to access
-    public static final String AUTHORITY = "com.example.cezannec.todolist";
+    public static final String AUTHORITY = "com.example.udacity.todolist";
 
     //2. Use the authority to create the Content URI for this whole contract
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
@@ -26,7 +26,7 @@ public class TaskContract {
 
     public static final String[] ALL_COLUMNS = new String[]{
             ItemEntry._ID,
-            ItemEntry.COLUMN_TASKTITLE,
+            ItemEntry.COLUMN_TASK_TITLE,
             ItemEntry.COLUMN_PRIORITY
     };
 
@@ -60,7 +60,7 @@ public class TaskContract {
 
         public static final String TABLE_NAME = "tasks";
 
-        public static final String COLUMN_TASKTITLE = "title";
+        public static final String COLUMN_TASK_TITLE = "title";
 
         public static final String COLUMN_PRIORITY = "priority";
 

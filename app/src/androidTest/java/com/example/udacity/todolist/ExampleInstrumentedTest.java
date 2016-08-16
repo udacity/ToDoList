@@ -1,4 +1,4 @@
-package com.example.cezannec.todolist;
+package com.example.udacity.todolist;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
