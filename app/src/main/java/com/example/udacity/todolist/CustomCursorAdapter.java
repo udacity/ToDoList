@@ -87,8 +87,13 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return mCursor.getCount();
     }
 
-    // helper method for changeCursor
-    private Cursor swapCursor(Cursor c) {
+    // helper method for changeCursor -- when there is no loader to close the ursor automatically!
+    /* In the non-loader case, this should..
+    1) be private
+    2)return the Cursor temp
+    3) changeCursor should be available
+     */
+    public Cursor swapCursor(Cursor c) {
         // check if this cursor is the same as the previous cursor (mCursor)
         if (mCursor == c) {
             return null; // bc nothing has changed
@@ -106,7 +111,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     //The real swapCursor - swaps AND closes the cursor
     // uses private swap cursor and then closes the cursor, is this necessary??
 
-    //change
+    //change and close
+    /*
     public void changeCursor(Cursor c) {
         //swap!
         Cursor temp = swapCursor(c);
@@ -114,6 +120,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
             temp.close(); // then close the old cursor if it exists (unnecessary clean up?)
         }
     }
+    */
 
     // inner class for view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 } else {
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
                 }
-                rAdapter.changeCursor(c);
+                rAdapter.swapCursor(c);
             }
         }).attachToRecyclerView(recView);
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
         }
-        rAdapter.changeCursor(c);
+        rAdapter.swapCursor(c);
 
         // show the uri that the inserted entry is in
         Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null /* selection args need to test */,
                 sortId);
 
-        rAdapter.changeCursor(c);
+        rAdapter.swapCursor(c);
     }
 
 
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mSelectionArgs,
                 null);
 
-        rAdapter.changeCursor(c);
+        rAdapter.swapCursor(c);
 
 
     }
@@ -223,14 +223,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //adapter..
-        rAdapter.changeCursor(data);
+        rAdapter.swapCursor(data);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        rAdapter.changeCursor(null);
+        rAdapter.swapCursor(null);
 
     }
 }
