@@ -98,6 +98,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onClickAddTask(View view) {
         ContentValues contentValues = new ContentValues();
 
+        // check if the input is empty (won't create an entry in this case)
+        String input = ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString();
+        if(input.length()== 0){
+            return;
+        }
+
         contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_TITLE,
                 ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
 
@@ -148,20 +154,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // sorting button function
     public void onClickSort(View view) {
 
-        isSorted = true;
+        // add button toggle behavior
+        isSorted = !isSorted; // toggles from true <-> false
 
-        //TODO: sorting by priority - can have them test out different ways to sort
-        String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
-        //System.out.println("Sort id = " + sortId);
+        Cursor c;
 
-        //query the content provider for a new sorted cursor
-        //should auto update bc of loader?
-        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                null,
-                null,
-                null /* selection args need to test */,
-                sortId);
+        if(isSorted) {
 
+            //TODO: sorting by priority - can have them test out different ways to sort
+            String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
+            //System.out.println("Sort id = " + sortId);
+
+            //query the content provider for a new sorted cursor
+            //should auto update bc of loader?
+            c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                    null,
+                    null,
+                    null /* selection args need to test */,
+                    sortId);
+
+        } else {
+            // unsorted
+            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+        }
         mAdapter.swapCursor(c);
     }
 
