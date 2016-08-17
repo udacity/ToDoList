@@ -23,9 +23,9 @@ import com.example.udacity.todolist.data.TaskContract;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //Recycler view vars
-    private RecyclerView recView;
+    private RecyclerView mRecyclerView;
     //need to create custom adapter class first
-    private CustomCursorAdapter rAdapter;
+    private CustomCursorAdapter mAdapter;
 
     private boolean isSorted; //initialized as false
 
@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rAdapter = new CustomCursorAdapter(this);
+        mAdapter = new CustomCursorAdapter(this);
 
         //set up Recycler view
-        recView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
 
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        recView.setAdapter(rAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
 
         //TODO: implement swipe delete
@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 } else {
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
                 }
-                rAdapter.swapCursor(c);
+                mAdapter.swapCursor(c);
             }
-        }).attachToRecyclerView(recView);
+        }).attachToRecyclerView(mRecyclerView);
 
         // set up loader
         getSupportLoaderManager().restartLoader(0, null, this);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
         }
-        rAdapter.swapCursor(c);
+        mAdapter.swapCursor(c);
 
         // show the uri that the inserted entry is in
         Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null /* selection args need to test */,
                 sortId);
 
-        rAdapter.swapCursor(c);
+        mAdapter.swapCursor(c);
     }
 
 
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 mSelectionArgs,
                 null);
 
-        rAdapter.swapCursor(c);
+        mAdapter.swapCursor(c);
 
 
     }
@@ -223,14 +223,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //adapter..
-        rAdapter.swapCursor(data);
+        mAdapter.swapCursor(data);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        rAdapter.swapCursor(null);
+        mAdapter.swapCursor(null);
 
     }
 }

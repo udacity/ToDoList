@@ -25,10 +25,10 @@ public class TaskContentProvider extends ContentProvider {
     private static final int ONE_TASK = 101;
 
     //Uri matcher that we construct
-    private static final UriMatcher uriMatcher = buildUriMatcher();
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     //4.1 declare database so you can access it throughout (initialized in onCreate() )
-    private TaskDbHelper taskDb;
+    private TaskDbHelper mTaskDbHelper;
 
 
     public TaskContentProvider() {
@@ -58,7 +58,7 @@ public class TaskContentProvider extends ContentProvider {
         // TODO: Implement this to handle requests for the MIME type of the data
         // at the given URI.
 
-        switch (uriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case TASKS:
                 return TaskContract.ItemEntry.CONTENT_TYPE;
             case ONE_TASK:
@@ -77,7 +77,7 @@ public class TaskContentProvider extends ContentProvider {
         // TODO: Implement this to initialize your content provider on startup.
 
         Context context = getContext();
-        taskDb = new TaskDbHelper(context);
+        mTaskDbHelper = new TaskDbHelper(context);
         return true;
         //return false;
     }
@@ -92,7 +92,7 @@ public class TaskContentProvider extends ContentProvider {
 
         String id;
 
-        switch (uriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case TASKS: id = null;
                 break;
             case ONE_TASK:
@@ -105,7 +105,7 @@ public class TaskContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Uri match not recognized!");
         }
         //NOTIFICATION and return cursor
-        Cursor c = taskDb.getTasks(id, projection, selection, selectionArgs, sortOrder);
+        Cursor c = mTaskDbHelper.getTasks(id, projection, selection, selectionArgs, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
 
@@ -123,9 +123,9 @@ public class TaskContentProvider extends ContentProvider {
 
         Uri returnUri; // to be returned
 
-        switch (uriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case TASKS:
-                long id = taskDb.addNewTask(values);
+                long id = mTaskDbHelper.addNewTask(values);
                 // sunshine uses a helper build uri method for the line below, hmm
                 returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
 
@@ -152,13 +152,13 @@ public class TaskContentProvider extends ContentProvider {
 
         String id;
 
-        switch (uriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case TASKS: id = null;
                 break;
             case ONE_TASK:
                 //delete a single task b getting the id
                 id = uri.getPathSegments().get(1);
-                tasksDeleted = taskDb.deleteTask(id);
+                tasksDeleted = mTaskDbHelper.deleteTask(id);
                 break;
             default:
                 throw new UnsupportedOperationException("Uri match not recognized!");
@@ -186,13 +186,13 @@ public class TaskContentProvider extends ContentProvider {
 
         String id;
 
-        switch (uriMatcher.match(uri)) {
+        switch (sUriMatcher.match(uri)) {
             case TASKS: id = null;
                 break;
             case ONE_TASK:
                 //delete a single task b getting the id
                 id = uri.getPathSegments().get(1);
-                tasksUpdated = taskDb.updateTasks(id, values);
+                tasksUpdated = mTaskDbHelper.updateTasks(id, values);
                 break;
             default:
                 throw new UnsupportedOperationException("Uri match not recognized!");

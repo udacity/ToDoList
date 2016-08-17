@@ -46,6 +46,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // query
     public Cursor getTasks(String id, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder sqliteQueryBuilder = new SQLiteQueryBuilder();
         sqliteQueryBuilder.setTables(TABLE_NAME);
@@ -66,6 +67,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 
     //NEW for inserting, etc
 
+    //insert
     public long addNewTask(ContentValues values) throws SQLException {
 
         final SQLiteDatabase db = getWritableDatabase();
@@ -76,6 +78,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    //delete
     public int deleteTask(String id) {
         if (id == null) {
             return getWritableDatabase().delete(TABLE_NAME, null, null);
@@ -84,6 +87,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    //update
     public int updateTasks(String id, ContentValues values) {
         if (id == null) {
             return getWritableDatabase().update(TABLE_NAME, values, null, null);
