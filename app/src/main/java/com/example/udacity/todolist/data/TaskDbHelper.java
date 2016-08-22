@@ -17,7 +17,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "TasksDb.db";
     private static final String TABLE_NAME = TaskContract.ItemEntry.TABLE_NAME;
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
 
     // create SQL table (careful about formatting)

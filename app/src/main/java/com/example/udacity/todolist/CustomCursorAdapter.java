@@ -75,6 +75,11 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
                 break;
         }
 
+        // takes in context and ~instanceNum~ which in this case will be the priority
+        int backgroundColorForViewHolder = ColorUtils
+                .getViewHolderBackgroundColorFromInstance(mContext, priority);
+        holder.itemView.setBackgroundColor(backgroundColorForViewHolder);
+
     }
 
 
@@ -87,7 +92,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return mCursor.getCount();
     }
 
-    // helper method for changeCursor -- when there is no loader to close the ursor automatically!
+    // helper method for changeCursor -- when there is no loader - to close the cursor!
     /* In the non-loader case, this should..
     1) be private
     2)return the Cursor temp

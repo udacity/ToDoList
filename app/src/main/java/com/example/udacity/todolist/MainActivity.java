@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private boolean isSorted; //initialized as false
 
+    private int priority; // keep track of what priority is checked
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         }).attachToRecyclerView(mRecyclerView);
 
+
+        // initialize to Priority = 1
+        ((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
+        priority = 1; // init to P1
+
         // set up loader
         getSupportLoaderManager().restartLoader(0, null, this);
     }
@@ -107,17 +114,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_TITLE,
                 ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
 
-        int checked = 4; // init to 4, so it's lower priority than the rest of the tasks
-        //1-3 = high to low priorities
+
         if(((RadioButton) findViewById(R.id.firstButton)).isChecked()){
-            checked = 1;
+            priority = 1;
         } else if(((RadioButton) findViewById(R.id.secondButton)).isChecked()){
-            checked = 2;
+            priority = 2;
         } else if(((RadioButton) findViewById(R.id.thirdButton)).isChecked()){
-            checked = 3;
+            priority = 3;
         }
 
-        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, checked);
+        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);
 
         // insert values through content resolver
         Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
@@ -138,7 +144,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //Set Edit text back to empty fields
         ((EditText) findViewById(R.id.editTextTaskTitle)).getText().clear();
-        ((RadioGroup) findViewById(R.id.priorityGroup)).clearCheck();
+
+        // reset priority to 1
+        //((RadioGroup) findViewById(R.id.priorityGroup)).clearCheck();
+        ((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
     }
 
 
