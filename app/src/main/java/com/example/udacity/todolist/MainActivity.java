@@ -14,7 +14,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.udacity.todolist.data.TaskContentProvider;
@@ -22,8 +21,6 @@ import com.example.udacity.todolist.data.TaskContract;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    //Recycler view vars
-    private RecyclerView mRecyclerView;
     //need to create custom adapter class first
     private CustomCursorAdapter mAdapter;
 
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter = new CustomCursorAdapter(this);
 
         //set up Recycler view
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int myId = (int) viewHolder.itemView.getTag();
                 System.out.println("tag for itemView id:  " + myId);
-                String sId = "" + myId;
+
                 //build appropriate uri with row id appended
                 Uri uri = TaskContract.ItemEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath("" + myId).build();
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getContentResolver().delete(uri, null, null);
 
                 Cursor c;
-                if(isSorted) {
+                if (isSorted) {
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
                             TaskContract.ItemEntry.COLUMN_PRIORITY);
 
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // check if the input is empty (won't create an entry in this case)
         String input = ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString();
-        if(input.length()== 0){
+        if (input.length() == 0) {
             return;
         }
 
@@ -115,11 +112,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
 
 
-        if(((RadioButton) findViewById(R.id.firstButton)).isChecked()){
+        if (((RadioButton) findViewById(R.id.firstButton)).isChecked()) {
             priority = 1;
-        } else if(((RadioButton) findViewById(R.id.secondButton)).isChecked()){
+        } else if (((RadioButton) findViewById(R.id.secondButton)).isChecked()) {
             priority = 2;
-        } else if(((RadioButton) findViewById(R.id.thirdButton)).isChecked()){
+        } else if (((RadioButton) findViewById(R.id.thirdButton)).isChecked()) {
             priority = 3;
         }
 
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //update cursor
         Cursor c;
-        if(isSorted) {
+        if (isSorted) {
             c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
                     TaskContract.ItemEntry.COLUMN_PRIORITY);
 
@@ -151,10 +148,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-
-
     //radio button click code -- just to check it's working
-    public void onRadioButtonClicked(View view){
+    public void onRadioButtonClicked(View view) {
         //handle if a radio button is checked
         System.out.println("Clicked!");
 
@@ -168,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Cursor c;
 
-        if(isSorted) {
+        if (isSorted) {
 
             //TODO: sorting by priority - can have them test out different ways to sort
             String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
@@ -225,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     */
 
 
-
     //------ Loader code -----
 
     // Loaders will automatically update the view only if
@@ -237,10 +231,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        CursorLoader cursorLoader = new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
+        return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
                 null, null, null, null);
-
-        return cursorLoader;
         //return null;
     }
 

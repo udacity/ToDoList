@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/activity_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,23 +10,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.udacity.todolist.MainActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    tools:context="com.example.udacity.todolist.MainActivity">
 
     <EditText
         android:id="@+id/editTextTaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Add a new task" />
+        android:hint="@string/add_a_new_task" />
 
 
     <!-- add button will be moved to the left; delete to the right -->
     <!-- would usually have gravity center_horizontal -->
 
     <RadioGroup
-        android:id="@+id/priorityGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -35,31 +33,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="Priority 1" />
+            android:text="@string/priority_1" />
 
         <RadioButton
             android:id="@+id/secondButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="Priority 2" />
+            android:text="@string/priority_2" />
 
         <RadioButton
             android:id="@+id/thirdButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="Priority 3" />
+            android:text="@string/priority_3" />
     </RadioGroup>
 
 
     <Button
-        android:id="@+id/btnAddTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickAddTask"
-        android:text="+ Add Task" />
+        android:text="@string/add_task" />
 
 
     <Button
@@ -67,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickSort"
-        android:text="Sort" />
+        android:text="@string/sort" />
 
     <!-- testing how selections work in cursors (Choosing to leave out for now) -->
     <!--<Button

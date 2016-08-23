@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -12,17 +12,16 @@
         android:id="@+id/taskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:padding="5dp"
         android:textColor="#000000"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"/>
+        android:textSize="18sp" />
     <!-- padding = a little bit of spacing between views -->
 
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
 
     <!--<Button
@@ -39,10 +38,10 @@
         android:id="@+id/androidPriorityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:padding="5dp"
-        android:textSize="18sp"
         android:textColor="#0000FF"
-        android:layout_gravity="end" />
+        android:textSize="18sp" />
 
 
     <!--<TextView
@@ -51,7 +50,6 @@
         android:text="Swipe to delete"
         android:layout_gravity="end"
         android:padding="5dp"/>-->
-
 
 
 </LinearLayout>
