@@ -62,14 +62,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
-=======
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickSort"
-        android:text="@string/sort" />
->>>>>>> 2f372f582b42a0d6c896ec0607d7ac7972698e3d
 
         <Button
             android:layout_width="wrap_content"
