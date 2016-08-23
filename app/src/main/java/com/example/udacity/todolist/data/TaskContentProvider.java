@@ -31,10 +31,17 @@ public class TaskContentProvider extends ContentProvider {
     private TaskDbHelper mTaskDbHelper;
 
 
+    //9. Latest step - add selections! -
+    //priority = ?
+    private static final String sPrioritySelection =
+            TaskContract.ItemEntry.TABLE_NAME+
+                    "." + TaskContract.ItemEntry.COLUMN_PRIORITY + " = ? ";
+
+
     public TaskContentProvider() {
     }
 
-    // 2 Build the URI matcher - based on the URI int's you declared above!
+    // 2. Build the URI matcher - based on the URI int's you declared above!
 
     private static UriMatcher buildUriMatcher() {
 
@@ -156,7 +163,7 @@ public class TaskContentProvider extends ContentProvider {
             case TASKS: id = null;
                 break;
             case ONE_TASK:
-                //delete a single task b getting the id
+                //delete a single task by getting the id
                 id = uri.getPathSegments().get(1);
                 tasksDeleted = mTaskDbHelper.deleteTask(id);
                 break;
@@ -205,4 +212,75 @@ public class TaskContentProvider extends ContentProvider {
 
         return tasksUpdated;
     }
+
+
+    //9.1 Create helper method for building a selection query
+
+    private Cursor getTasksByPriority(Uri uri, String[] projection, String sortOrder) {
+        //change to priority
+        //String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+
+        // will select all tasks with Priority = 1
+        // can change this to be selectable
+        String prioritySetting = "1";
+
+        String selection;
+        String[] selectionArgs;
+
+        selection = sPrioritySelection;
+        selectionArgs = new String[]{prioritySetting};
+
+        String id;
+
+        switch (sUriMatcher.match(uri)) {
+            case TASKS: id = null;
+                break;
+            case ONE_TASK:
+                //get(1) returns  the path segment of the uri with index = 1
+                // in this case: content://com.example.udacity.todolist/tasks/#
+                // tasks is at index 0, the # which is the row, is at index 1
+                id = uri.getPathSegments().get(1);
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri match not recognized!");
+        }
+
+
+        return mTaskDbHelper.getTasks(id,
+                projection,
+                selection,
+                selectionArgs,
+                sortOrder
+        );
+    }
+
+
+
+    /*
+    // create 1) selection clause and 2) corresponding args
+        // this lets you choose rows based on a selection criteria
+
+        // Defines a string to contain the selection clause
+        String mSelectionClause = null;
+
+        // Initializes an array to contain selection arguments
+        // defines a one element String array to contain the selection argument
+        String[] mSelectionArgs = {""};
+
+        mSelectionClause = TaskContract.ItemEntry.COLUMN_PRIORITY + " = ?";
+
+        // what row of priority do you want to select?
+
+        //Could add this as an input parameter
+        mSelectionArgs[0] = "1";
+
+        //actually do something with those selection args (query then update)
+        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                null,
+                mSelectionClause,
+                mSelectionArgs,
+                null);
+
+        mAdapter.swapCursor(c);
+     */
 }
