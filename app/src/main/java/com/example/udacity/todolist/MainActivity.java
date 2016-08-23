@@ -191,9 +191,32 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     // playing around with cursor display and selection args
-    /*
-    public void onClickSelection(View view) {
+    // there is probably a more efficient way to do this, like a drop-down menu??
+    public void onClickSelection1(View view) {
 
+        // references private helper method onClickSelection
+        int priority = 1;
+        onClickSelection(view, priority);
+
+    }
+
+    public void onClickSelection2(View view) {
+
+        // references private helper method onClickSelection
+        int priority = 2;
+        onClickSelection(view, priority);
+
+    }
+
+    public void onClickSelection3(View view) {
+
+        // references private helper method onClickSelection
+        int priority = 3;
+        onClickSelection(view, priority);
+
+    }
+
+    private void onClickSelection(View view, int priority) {
         // create 1) selection clause and 2) corresponding args
         // this lets you choose rows based on a selection criteria
 
@@ -209,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // what row of priority do you want to select?
 
         //Could add this as an input parameter
-        mSelectionArgs[0] = "1";
+        mSelectionArgs[0] = ""+priority;
 
         //actually do something with those selection args (query then update)
         Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
@@ -220,9 +243,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mAdapter.swapCursor(c);
 
-
     }
-    */
+
 
 
 

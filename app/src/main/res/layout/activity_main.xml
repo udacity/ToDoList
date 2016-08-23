@@ -62,20 +62,49 @@
         android:text="+ Add Task" />
 
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickSort"
-        android:text="Sort" />
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
-    <!-- testing how selections work in cursors (Choosing to leave out for now) -->
-    <!--<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Select Priority 1"
-        android:onClick="onClickSelection"/>-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickSort"
+            android:text="Sort" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Show \n Priority: "
+            android:layout_gravity="center"/>
+
+        <!-- testing how selections work in cursors (Choosing to leave out for now) -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="1"
+            android:onClick="onClickSelection1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="2"
+            android:onClick="onClickSelection2"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="3"
+            android:onClick="onClickSelection3"/>
+
+    </LinearLayout>
 
     <!-- is it both match parent?-->
     <!-- omg it should def be match_parent -_- after watching a tiny scroll screen -->
