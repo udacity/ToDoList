@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-/**
- * Created by cezannec on 8/13/16.
- */
 
 public class TaskDbHelper extends SQLiteOpenHelper {
 
@@ -55,14 +52,13 @@ public class TaskDbHelper extends SQLiteOpenHelper {
             sqliteQueryBuilder.appendWhere("_id" + " = " + id);
         }
 
-        Cursor cursor = sqliteQueryBuilder.query(getReadableDatabase(),
+        return sqliteQueryBuilder.query(getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
                 null,
                 null,
                 sortOrder);
-        return cursor;
     }
 
     //NEW for inserting, etc

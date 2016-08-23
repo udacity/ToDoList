@@ -31,7 +31,6 @@ public class TaskContract {
     };
 
 
-
     // Inner class that defines the table contents of the task table
 
     public static final class ItemEntry implements BaseColumns {

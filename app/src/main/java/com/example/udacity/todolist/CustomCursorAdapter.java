@@ -10,11 +10,6 @@ import android.widget.TextView;
 
 import com.example.udacity.todolist.data.TaskContract;
 
-/**
- * Created by cezannec on 8/13/16.
- */
-
-
 public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.ViewHolder> {
 
     private Cursor mCursor; // create swapCursor method with this
@@ -56,23 +51,11 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         holder.titleView.setText(title);
 
         //handle visibility and priority markers
-
-        switch(priority) {
-            case 1: //p1
-                holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("[Priority: 1]");
-                break;
-            case 2: //p2
-                holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("[Priority: 2]");
-                break;
-            case 3: //p3
-                holder.priorityView.setVisibility(View.VISIBLE);
-                holder.priorityView.setText("[Priority: 3]");
-                break;
-            default: //priority == 4, no priority was selected so this has lowest priority
-                holder.priorityView.setVisibility(View.GONE);
-                break;
+        if (priority == 1 || priority == 2 || priority == 3) {
+            holder.priorityView.setVisibility(View.VISIBLE);
+            holder.priorityView.setText(mContext.getString(R.string.boxed_priority, priority));
+        } else {
+            holder.priorityView.setVisibility(View.GONE);
         }
 
         // takes in context and ~instanceNum~ which in this case will be the priority
