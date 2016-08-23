@@ -200,21 +200,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    public void onClickSelection2(View view) {
-
-        // references private helper method onClickSelection
-        int priority = 2;
-        onClickSelection(view, priority);
-
-    }
-
-    public void onClickSelection3(View view) {
-
-        // references private helper method onClickSelection
-        int priority = 3;
-        onClickSelection(view, priority);
-
-    }
 
     private void onClickSelection(View view, int priority) {
         // create 1) selection clause and 2) corresponding args
