@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -12,27 +13,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.udacity.todolist.MainActivity">
 
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
     <EditText
         android:id="@+id/editTextTaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:hint="@string/add_a_new_task" />
+
+    <ImageButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:background="@android:drawable/ic_input_add"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintRight_toRightOf="@+id/editTextTaskTitle"
+        android:onClick="onClickAddTask"/>
+
+    </android.support.constraint.ConstraintLayout>
+
 
 
     <!-- add button will be moved to the left; delete to the right -->
     <!-- would usually have gravity center_horizontal -->
 
     <RadioGroup
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <RadioButton
             android:id="@+id/firstButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
+            android:background="@null"
             android:text="@string/priority_1" />
 
         <RadioButton
@@ -49,14 +70,6 @@
             android:onClick="onRadioButtonClicked"
             android:text="@string/priority_3" />
     </RadioGroup>
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickAddTask"
-        android:text="@string/add_task" />
 
 
     <LinearLayout
@@ -85,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="1"
-            android:onClick="onClickSelection1"/>
+            android:onClick="onClickSelection1" />
 
 
     </LinearLayout>

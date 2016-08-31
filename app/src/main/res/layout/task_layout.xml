@@ -34,14 +34,14 @@
 
 
     <!--set visible if COLUMN_PRIORITY = 1,2,3 (not 0) in adapter -->
-    <TextView
+    <!--<TextView
         android:id="@+id/androidPriorityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:padding="5dp"
         android:textColor="#0000FF"
-        android:textSize="18sp" />
+        android:textSize="18sp" />-->
 
 
     <!--<TextView

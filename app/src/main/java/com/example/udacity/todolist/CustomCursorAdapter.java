@@ -51,12 +51,14 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         holder.titleView.setText(title);
 
         //handle visibility and priority markers
+        /*
         if (priority == 1 || priority == 2 || priority == 3) {
             holder.priorityView.setVisibility(View.VISIBLE);
             holder.priorityView.setText(mContext.getString(R.string.boxed_priority, priority));
         } else {
             holder.priorityView.setVisibility(View.GONE);
         }
+        */
 
         // takes in context and ~instanceNum~ which in this case will be the priority
         int backgroundColorForViewHolder = ColorUtils
@@ -114,13 +116,13 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView titleView;
-        public TextView priorityView;
+        //public TextView priorityView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             // create constructor and initialize views
             titleView = (TextView) itemView.findViewById(R.id.taskTitle);
-            priorityView = (TextView) itemView.findViewById(R.id.androidPriorityText);
+            //priorityView = (TextView) itemView.findViewById(R.id.androidPriorityText);
 
 
         }
