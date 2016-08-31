@@ -86,11 +86,11 @@
             android:text="Sort" />
 
 
-        <TextView
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Select: "
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"/>-->
 
         <!-- testing how selections work in cursors (Choosing to leave out for now) -->
         <Button
@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="P1"
+            android:backgroundTint="@color/material100Green"
             android:onClick="onClickSelection1" />
 
 
