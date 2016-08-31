@@ -89,15 +89,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Show \n Priority: "
+            android:text=" Select: "
             android:layout_gravity="center"/>
 
         <!-- testing how selections work in cursors (Choosing to leave out for now) -->
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="1"
+            android:text="P1"
             android:onClick="onClickSelection1" />
 
 
