@@ -9,11 +9,11 @@
 
 
     <TextView
-        android:id="@+id/taskTitle"
+        android:id="@+id/taskName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:padding="5dp"
+        android:padding="15dp"
         android:textColor="#000000"
         android:textSize="18sp" />
     <!-- padding = a little bit of spacing between views -->
@@ -22,6 +22,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <!-- will programmatically color in adapter -->
+    <TextView
+        android:id="@+id/priorityMarker"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
 
 
     <!--<Button

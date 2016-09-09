@@ -1,9 +1,11 @@
 package com.example.udacity.todolist;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     //need to create custom adapter class first
     private CustomCursorAdapter mAdapter;
 
-    private boolean isSorted; //initialized as false
+    //private boolean isSorted; //initialized as false
 
     private int priority; // keep track of what priority is checked
 
@@ -68,24 +70,47 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getContentResolver().delete(uri, null, null);
 
                 Cursor c;
+                /*
                 if (isSorted) {
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
                             TaskContract.ItemEntry.COLUMN_PRIORITY);
 
                 } else {
+                */
                     c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
-                }
+                //}
                 mAdapter.swapCursor(c);
             }
         }).attachToRecyclerView(mRecyclerView);
 
 
         // initialize to Priority = 1
+        /*
         ((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
         priority = 1; // init to P1
+        */
 
         // set up loader
         getSupportLoaderManager().restartLoader(0, null, this);
+
+
+
+        // *new* FAB launch new activity
+        // set an onClickListener
+
+        FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab);
+
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the numbers category is clicked on.
+            @Override
+            public void onClick(View view) {
+                // Create a new intent to open the {@link NumbersActivity}
+                Intent addTaskIntent = new Intent(MainActivity.this, AddTaskActivity.class);
+
+                // Start the new activity
+                startActivity(addTaskIntent);
+            }
+        });
     }
 
 
@@ -99,53 +124,55 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
     */
 
-    public void onClickAddTask(View view) {
-        ContentValues contentValues = new ContentValues();
-
-        // check if the input is empty (won't create an entry in this case)
-        String input = ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString();
-        if (input.length() == 0) {
-            return;
-        }
-
-        contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_TITLE,
-                ((EditText) findViewById(R.id.editTextTaskTitle)).getText().toString());
-
-
-        if (((RadioButton) findViewById(R.id.firstButton)).isChecked()) {
-            priority = 1;
-        } else if (((RadioButton) findViewById(R.id.secondButton)).isChecked()) {
-            priority = 2;
-        } else if (((RadioButton) findViewById(R.id.thirdButton)).isChecked()) {
-            priority = 3;
-        }
-
-        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);
-
-        // insert values through content resolver
-        Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
-
-        //update cursor
-        Cursor c;
-        if (isSorted) {
-            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
-                    TaskContract.ItemEntry.COLUMN_PRIORITY);
-
-        } else {
-            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
-        }
-        mAdapter.swapCursor(c);
-
-        // show the uri that the inserted entry is in
-        Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-
-        //Set Edit text back to empty fields
-        ((EditText) findViewById(R.id.editTextTaskTitle)).getText().clear();
-
-        // reset priority to 1
-        //((RadioGroup) findViewById(R.id.priorityGroup)).clearCheck();
-        ((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
-    }
+//    /*public void onClickAddTask(View view) {
+//        ContentValues contentValues = new ContentValues();
+//
+//        // check if the input is empty (won't create an entry in this case)
+//        String input = ((EditText) findViewById(R.id.editTextTaskName)).getText().toString();
+//        if (input.length() == 0) {
+//            return;
+//        }
+//
+//        contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_NAME,
+//                ((EditText) findViewById(R.id.editTextTaskName)).getText().toString());
+//
+//
+//        if (((RadioButton) findViewById(R.id.firstButton)).isChecked()) {
+//            priority = 1;
+//        } else if (((RadioButton) findViewById(R.id.secondButton)).isChecked()) {
+//            priority = 2;
+//        } else if (((RadioButton) findViewById(R.id.thirdButton)).isChecked()) {
+//            priority = 3;
+//        }
+//
+//        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);
+//
+//        // insert values through content resolver
+//        Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
+//
+//        //update cursor
+//        Cursor c;
+//
+//        System.out.println("SORTED?? : " + isSorted);
+//        if (isSorted) {
+//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
+//                    TaskContract.ItemEntry.COLUMN_PRIORITY);
+//
+//        } else {
+//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+//        }
+//        mAdapter.swapCursor(c);
+//
+//        // show the uri that the inserted entry is in
+//        Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+//
+//        //Set Edit text back to empty fields
+//        //((EditText) findViewById(R.id.editTextTaskName)).getText().clear();
+//
+//        // reset priority to 1
+//        //((RadioGroup) findViewById(R.id.priorityGroup)).clearCheck();
+//        //((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
+//    }*/
 
 
     //radio button click code -- just to check it's working
@@ -156,33 +183,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     // sorting button function
-    public void onClickSort(View view) {
 
-        // add button toggle behavior
-        isSorted = !isSorted; // toggles from true <-> false
+//    public void onClickSort(View view) {
+//
+//        // add button toggle behavior
+//        isSorted = !isSorted; // toggles from true <-> false
+//
+//        Cursor c;
+//
+//        if (isSorted) {
+//
+//            //TODO: sorting by priority - can have them test out different ways to sort
+//            String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
+//            //System.out.println("Sort id = " + sortId);
+//
+//            //query the content provider for a new sorted cursor
+//            //should auto update bc of loader?
+//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+//                    null,
+//                    null,
+//                    null /* selection args need to test */,
+//                    sortId);
+//
+//        } else {
+//            // unsorted
+//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+//        }
+//        mAdapter.swapCursor(c);
+//    }
 
-        Cursor c;
-
-        if (isSorted) {
-
-            //TODO: sorting by priority - can have them test out different ways to sort
-            String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
-            //System.out.println("Sort id = " + sortId);
-
-            //query the content provider for a new sorted cursor
-            //should auto update bc of loader?
-            c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                    null,
-                    null,
-                    null /* selection args need to test */,
-                    sortId);
-
-        } else {
-            // unsorted
-            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
-        }
-        mAdapter.swapCursor(c);
-    }
 
 
     // playing around with cursor display and selection args
@@ -238,8 +267,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
+        //handle sorting
+
+        //loader sorts by priority
         return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
-                null, null, null, null);
+                null, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
+
+
+            /*
+            // previous; no sorting case
+            return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
+                    null, null, null, null);
+                    */
+
         //return null;
     }
 

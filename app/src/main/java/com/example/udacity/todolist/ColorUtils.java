@@ -50,11 +50,11 @@ public class ColorUtils {
     public static int getViewHolderBackgroundColorFromInstance(Context context, int priority) {
         switch (priority) {
             case 1:
-                return ContextCompat.getColor(context, R.color.material100Green);
+                return ContextCompat.getColor(context, R.color.materialRed);
             case 2:
-                return ContextCompat.getColor(context, R.color.material350Green);
+                return ContextCompat.getColor(context, R.color.materialYellow);
             case 3:
-                return ContextCompat.getColor(context, R.color.material600Green);
+                return ContextCompat.getColor(context, R.color.materialGreen);
             case 4:
                 return ContextCompat.getColor(context, R.color.material850Green);
             default:

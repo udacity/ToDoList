@@ -14,14 +14,14 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "TasksDb.db";
     private static final String TABLE_NAME = TaskContract.ItemEntry.TABLE_NAME;
 
-    private static final int VERSION = 3;
+    private static final int VERSION = 6;
 
 
     // create SQL table (careful about formatting)
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    TaskContract.ItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TaskContract.ItemEntry.COLUMN_TASK_TITLE + " TEXT NOT NULL, " +
+                    TaskContract.ItemEntry._ID + " INTEGER PRIMARY KEY, " +
+                    TaskContract.ItemEntry.COLUMN_TASK_NAME + " TEXT NOT NULL, " +
                     TaskContract.ItemEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);";
 
 

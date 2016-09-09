@@ -26,7 +26,7 @@ public class TaskContract {
 
     public static final String[] ALL_COLUMNS = new String[]{
             ItemEntry._ID,
-            ItemEntry.COLUMN_TASK_TITLE,
+            ItemEntry.COLUMN_TASK_NAME,
             ItemEntry.COLUMN_PRIORITY
     };
 
@@ -59,7 +59,7 @@ public class TaskContract {
 
         public static final String TABLE_NAME = "tasks";
 
-        public static final String COLUMN_TASK_TITLE = "title";
+        public static final String COLUMN_TASK_NAME = "task_name";
 
         public static final String COLUMN_PRIORITY = "priority";
 

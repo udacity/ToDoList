@@ -10,4 +10,10 @@
     <color name="material350Green">#74C177</color>
     <color name="material600Green">#43A047</color>
     <color name="material850Green">#256E29</color>
+
+
+    <color name="materialRed">#FF6666</color>
+    <color name="materialYellow">#FFFF66</color>
+    <color name="materialGreen">#74C177</color>
+
 </resources>

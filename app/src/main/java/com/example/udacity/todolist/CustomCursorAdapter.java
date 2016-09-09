@@ -36,7 +36,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         // index of the ID column, title, author (0, 1, 2 -- autoincrement)
         int idIndex = mCursor.getColumnIndex(TaskContract.ItemEntry._ID);
-        int titleIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_TASK_TITLE);
+        int titleIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_TASK_NAME);
         int priorityIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_PRIORITY);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
@@ -48,7 +48,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         //set values
         holder.itemView.setTag(id);
-        holder.titleView.setText(title);
+        holder.nameView.setText(title);
 
         //handle visibility and priority markers
         /*
@@ -63,7 +63,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         // takes in context and ~instanceNum~ which in this case will be the priority
         int backgroundColorForViewHolder = ColorUtils
                 .getViewHolderBackgroundColorFromInstance(mContext, priority);
-        holder.itemView.setBackgroundColor(backgroundColorForViewHolder);
+
+        holder.pMarker.setBackgroundColor(backgroundColorForViewHolder);
+        holder.pMarker.setText(""+priority);
 
     }
 
@@ -115,13 +117,18 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     // inner class for view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView titleView;
+        public TextView nameView;
+
+        // priority drawable marker
+        public TextView pMarker;
+
         //public TextView priorityView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             // create constructor and initialize views
-            titleView = (TextView) itemView.findViewById(R.id.taskTitle);
+            nameView = (TextView) itemView.findViewById(R.id.taskName);
+            pMarker = (TextView) itemView.findViewById(R.id.priorityMarker);
             //priorityView = (TextView) itemView.findViewById(R.id.androidPriorityText);
 
 

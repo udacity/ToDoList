@@ -6,7 +6,7 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="All Tasks"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
@@ -17,6 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- new FAB activity -->
+        <activity
+            android:name=".AddTaskActivity"
+            android:label="Add Task" />
 
         <!-- Make sure that the provider is registered -->
         <!-- Make sure it's INSIDE the application tag -->

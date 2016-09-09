@@ -14,13 +14,13 @@
     tools:context="com.example.udacity.todolist.MainActivity">
 
 
-    <android.support.constraint.ConstraintLayout
+    <!--<android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/editTextTaskTitle"
+        android:id="@+id/editTextTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_a_new_task" />
@@ -32,17 +32,17 @@
         android:backgroundTint="@color/colorPrimary"
         android:background="@android:drawable/ic_input_add"
         android:layout_gravity="bottom|end"
-        app:layout_constraintRight_toRightOf="@+id/editTextTaskTitle"
+        app:layout_constraintRight_toRightOf="@+id/editTextTaskName"
         android:onClick="onClickAddTask"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>-->
 
 
 
     <!-- add button will be moved to the left; delete to the right -->
     <!-- would usually have gravity center_horizontal -->
 
-    <RadioGroup
+    <!--<RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -69,21 +69,21 @@
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
             android:text="@string/priority_3" />
-    </RadioGroup>
+    </RadioGroup>-->
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal">-->
 
-        <Button
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:onClick="onClickSort"
-            android:text="Sort" />
+            android:text="Sort" />-->
 
 
         <!--<TextView
@@ -94,22 +94,40 @@
 
         <!-- testing how selections work in cursors (Choosing to leave out for now) -->
         <Button
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="P1"
-            android:backgroundTint="@color/material100Green"
+            android:text="Select Only P1"
+            android:backgroundTint="@color/materialRed"
             android:onClick="onClickSelection1" />
 
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <!-- is it both match parent?-->
     <!-- omg it should def be match_parent -_- after watching a tiny scroll screen -->
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewTasks"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewTasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"
+            android:onClick="onClickAddTask"/>
+
+    </FrameLayout>
+
 
 </LinearLayout>
