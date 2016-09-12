@@ -12,8 +12,8 @@
     <color name="material850Green">#256E29</color>
 
 
-    <color name="materialRed">#FF6666</color>
-    <color name="materialYellow">#FFFF66</color>
-    <color name="materialGreen">#74C177</color>
+    <color name="materialRed">#EF5350</color>
+    <color name="materialYellow">#FFCA28</color>
+    <color name="materialGreen">#66BB6A</color>
 
 </resources>
