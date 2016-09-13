@@ -14,13 +14,14 @@ public class TaskContentProvider extends ContentProvider {
     public static final Uri CONTENT_URI = TaskContract.ItemEntry.CONTENT_URI; //public to access in main
 
 
-    //1. Define URIs - what information do you want to access/display?
+    //1. Define URIs - what information do you want to access/display/insert/delete?
 
     /* one for the whole table
     one for a row (in this case a row that contains data about one task)
     make a note: match Sunshine - these ints can be any value
-    convention is: if you have a main table, yu call it 100,
+    convention is: if you have a main table, you call it 100,
     and for multiple uri's in that table, do 101, 102, 103...
+    for a separate table, 200, 201, 202...
      */
     private static final int TASKS = 100;
     private static final int ONE_TASK = 101;
