@@ -9,14 +9,17 @@
         android:layout_gravity="center"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:text="Add Task"/>
+        android:text="Add Task"
+        android:padding="10dp"/>
 
     <EditText
         android:id="@+id/editTextTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:hint="Task description" />
+        android:hint="Task description"
+        android:padding="10dp"/>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,11 +27,13 @@
         android:layout_gravity="center"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:text="Priority"/>
+        android:text="Priority"
+        android:padding="10dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -111,6 +116,7 @@
         android:layout_gravity="center"
         android:text="ADD"
         android:textSize="20sp"
-        android:onClick="onClickAddTask"/>
+        android:onClick="onClickAddTask"
+        android:padding="10dp"/>
 
 </LinearLayout>

@@ -98,7 +98,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Select Only P1"
-            android:backgroundTint="@color/materialRed"
             android:onClick="onClickSelection1" />
 
 

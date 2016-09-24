@@ -45,8 +45,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_NAME,
-                ((EditText) findViewById(R.id.editTextTaskName)).getText().toString());
-
+                input);
 
 
         contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);

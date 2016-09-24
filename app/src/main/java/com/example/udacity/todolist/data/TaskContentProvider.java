@@ -84,7 +84,6 @@ public class TaskContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         // TODO: Implement this to initialize your content provider on startup.
-
         Context context = getContext();
         mTaskDbHelper = new TaskDbHelper(context);
         return true;
@@ -101,7 +100,9 @@ public class TaskContentProvider extends ContentProvider {
 
         String id;
 
-        switch (sUriMatcher.match(uri)) {
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
             case TASKS:
                 id = null;
                 break;
@@ -133,7 +134,9 @@ public class TaskContentProvider extends ContentProvider {
 
         Uri returnUri; // to be returned
 
-        switch (sUriMatcher.match(uri)) {
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
             case TASKS:
                 long id = mTaskDbHelper.addNewTask(values);
                 // sunshine uses a helper build uri method for the line below, hmm

@@ -61,11 +61,27 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         */
 
         // takes in context and ~instanceNum~ which in this case will be the priority
+
+        /*
         int backgroundColorForViewHolder = ColorUtils
                 .getViewHolderBackgroundColorFromInstance(mContext, priority);
 
         holder.pMarker.setBackgroundColor(backgroundColorForViewHolder);
+        */
+
         holder.pMarker.setText(""+priority);
+
+
+        switch(priority) {
+            case 1: holder.pMarker.setBackgroundResource(R.drawable.circle1);
+                break;
+            case 2: holder.pMarker.setBackgroundResource(R.drawable.circle2);
+                break;
+            case 3: holder.pMarker.setBackgroundResource(R.drawable.circle3);
+                break;
+            default: holder.pMarker.setVisibility(View.INVISIBLE);
+        }
+
 
     }
 
