@@ -6,8 +6,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import static com.example.udacity.todolist.data.TaskContract.ItemEntry.TABLE_NAME;
 
 public class TaskContentProvider extends ContentProvider {
 
@@ -36,7 +40,7 @@ public class TaskContentProvider extends ContentProvider {
     //9. Latest step - add selections! -
     //priority = ?
     private static final String sPrioritySelection =
-            TaskContract.ItemEntry.TABLE_NAME+
+            TABLE_NAME+
                     "." + TaskContract.ItemEntry.COLUMN_PRIORITY + " = ? ";
 
 
@@ -98,9 +102,25 @@ public class TaskContentProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
         // TODO: Implement this to handle query requests from clients.
 
+        //1. get access to db
+
+        final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
+
+        //1.1 Initialize query builder
+
+        SQLiteQueryBuilder sqliteQueryBuilder = new SQLiteQueryBuilder();
+        sqliteQueryBuilder.setTables(TABLE_NAME);
+
+
         String id;
+        Cursor retCursor;
 
         int match = sUriMatcher.match(uri);
+
+        /*
+
+
+         */
 
         switch (match) {
             case TASKS:
@@ -113,12 +133,23 @@ public class TaskContentProvider extends ContentProvider {
                 id = uri.getPathSegments().get(1);
                 break;
             default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //NOTIFICATION and return cursor
-        Cursor c = mTaskDbHelper.getTasks(id, projection, selection, selectionArgs, sortOrder);
-        c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
+        if (id != null) {
+            sqliteQueryBuilder.appendWhere("_id" + " = " + id);
+        }
+
+        retCursor =  sqliteQueryBuilder.query(db,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder);
+
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
 
         //throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -132,19 +163,24 @@ public class TaskContentProvider extends ContentProvider {
         //throw new UnsupportedOperationException("Not yet implemented");
         // check uri for validity
 
+        //1. get access to our database (to write new data to)
+        final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
+
         Uri returnUri; // to be returned
 
+        //2. Matching code
         int match = sUriMatcher.match(uri);
 
         switch (match) {
             case TASKS:
-                long id = mTaskDbHelper.addNewTask(values);
-                // sunshine uses a helper build uri method for the line below, hmm
-                returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
-
+                long id = db.insert(TABLE_NAME, null, values);
+                if ( id > 0 )
+                    returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //Notify
         getContext().getContentResolver().notifyChange(uri, null);
@@ -171,10 +207,11 @@ public class TaskContentProvider extends ContentProvider {
             case ONE_TASK:
                 //delete a single task by getting the id
                 id = uri.getPathSegments().get(1);
-                tasksDeleted = mTaskDbHelper.deleteTask(id);
+                //using selections
+                tasksDeleted = mTaskDbHelper.getWritableDatabase().delete(TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         if (tasksDeleted != 0) {
@@ -205,10 +242,11 @@ public class TaskContentProvider extends ContentProvider {
             case ONE_TASK:
                 //delete a single task b getting the id
                 id = uri.getPathSegments().get(1);
-                tasksUpdated = mTaskDbHelper.updateTasks(id, values);
+                //using selections
+                tasksUpdated = mTaskDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         if (tasksUpdated != 0) {
@@ -219,74 +257,4 @@ public class TaskContentProvider extends ContentProvider {
         return tasksUpdated;
     }
 
-
-    //9.1 Create helper method for building a selection query
-
-    private Cursor getTasksByPriority(Uri uri, String[] projection, String sortOrder) {
-        //change to priority
-        //String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
-
-        // will select all tasks with Priority = 1
-        // can change this to be selectable
-        String prioritySetting = "1";
-
-        String selection;
-        String[] selectionArgs;
-
-        selection = sPrioritySelection;
-        selectionArgs = new String[]{prioritySetting};
-
-        String id;
-
-        switch (sUriMatcher.match(uri)) {
-            case TASKS: id = null;
-                break;
-            case ONE_TASK:
-                //get(1) returns  the path segment of the uri with index = 1
-                // in this case: content://com.example.udacity.todolist/tasks/#
-                // tasks is at index 0, the # which is the row, is at index 1
-                id = uri.getPathSegments().get(1);
-                break;
-            default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
-        }
-
-
-        return mTaskDbHelper.getTasks(id,
-                projection,
-                selection,
-                selectionArgs,
-                sortOrder
-        );
-    }
-
-
-
-    /*
-    // create 1) selection clause and 2) corresponding args
-        // this lets you choose rows based on a selection criteria
-
-        // Defines a string to contain the selection clause
-        String mSelectionClause = null;
-
-        // Initializes an array to contain selection arguments
-        // defines a one element String array to contain the selection argument
-        String[] mSelectionArgs = {""};
-
-        mSelectionClause = TaskContract.ItemEntry.COLUMN_PRIORITY + " = ?";
-
-        // what row of priority do you want to select?
-
-        //Could add this as an input parameter
-        mSelectionArgs[0] = "1";
-
-        //actually do something with those selection args (query then update)
-        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                null,
-                mSelectionClause,
-                mSelectionArgs,
-                null);
-
-        mAdapter.swapCursor(c);
-     */
 }
