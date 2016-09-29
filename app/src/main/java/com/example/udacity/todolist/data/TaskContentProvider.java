@@ -44,8 +44,6 @@ public class TaskContentProvider extends ContentProvider {
                     "." + TaskContract.ItemEntry.COLUMN_PRIORITY + " = ? ";
 
 
-    public TaskContentProvider() {
-    }
 
     // 2. Build the URI matcher - based on the URI int's you declared above!
 
@@ -106,47 +104,24 @@ public class TaskContentProvider extends ContentProvider {
 
         final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
 
-        //1.1 Initialize query builder
-
-        SQLiteQueryBuilder sqliteQueryBuilder = new SQLiteQueryBuilder();
-        sqliteQueryBuilder.setTables(TABLE_NAME);
-
-
-        String id;
         Cursor retCursor;
 
         int match = sUriMatcher.match(uri);
 
-        /*
-
-
-         */
-
         switch (match) {
             case TASKS:
-                id = null;
-                break;
-            case ONE_TASK:
-                //get(1) returns  the path segment of the uri with index = 1
-                // in this case: content://com.example.udacity.todolist/tasks/#
-                // tasks is at index 0, the # which is the row, is at index 1
-                id = uri.getPathSegments().get(1);
+                retCursor =  db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //NOTIFICATION and return cursor
-        if (id != null) {
-            sqliteQueryBuilder.appendWhere("_id" + " = " + id);
-        }
-
-        retCursor =  sqliteQueryBuilder.query(db,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder);
 
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
