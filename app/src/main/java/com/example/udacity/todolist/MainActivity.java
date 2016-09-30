@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -21,15 +22,25 @@ import android.widget.Toast;
 import com.example.udacity.todolist.data.TaskContentProvider;
 import com.example.udacity.todolist.data.TaskContract;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+import java.net.URL;
+
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     //need to create custom adapter class first
     private CustomCursorAdapter mAdapter;
 
+    //
+
     //private boolean isSorted; //initialized as false
 
-    private int priority; // keep track of what priority is checked
+    //private int priority; // keep track of what priority is checked
 
+    // to distinguish loader if you want to refer to it later
+    private static final int TASK_LOADER_ID = 0;
+
+
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter = new CustomCursorAdapter(this);
 
         //set up Recycler view
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewTasks);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -77,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 } else {
                 */
-                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
+                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
                 //}
                 mAdapter.swapCursor(c);
             }
@@ -90,8 +101,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         priority = 1; // init to P1
         */
 
-        // set up loader
-        getSupportLoaderManager().restartLoader(0, null, this);
+        // set up loader (OLD)
+        //getSupportLoaderManager().restartLoader(0, null, this);
+
+        //setup (NEW)
+        /*
+         * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
+         * created and (if the activity/fragment is currently started) starts the loader. Otherwise
+         * the last created loader is re-used.
+         */
+        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
 
 
@@ -248,11 +267,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null,
                 mSelectionClause,
                 mSelectionArgs,
-                null);
+                TaskContract.ItemEntry.COLUMN_PRIORITY);
 
         mAdapter.swapCursor(c);
 
     }
+
+
+    //NEW -- for re-qerying after an insert (after resuming this activity!!)
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //actually do something with those selection args (query then update)
+        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                null,
+                null,
+                null,
+                TaskContract.ItemEntry.COLUMN_PRIORITY);
+
+        mAdapter.swapCursor(c);
+    }
+
 
 
 
@@ -264,37 +300,139 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Could show student an insert (with a Toast) and how a view changes/doesn't change
     based on including the cursor.setNotificationUri(getContext().getContentResolver(), uri);
      */
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//
+//        //handle sorting
+//
+//        //loader sorts by priority
+//        return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
+//                null, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
+//
+//
+//            /*
+//            // previous; no sorting case
+//            return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
+//                    null, null, null, null);
+//                    */
+//
+//        //return null;
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+//        //adapter..
+//        mAdapter.swapCursor(data);
+//
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//
+//        mAdapter.swapCursor(null);
+//
+//    }
+
+
+
+    // NEW Loader code:
+
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
 
-        //handle sorting
+        return new AsyncTaskLoader<Cursor>(this) {
 
-        //loader sorts by priority
-        return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
-                null, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
+            /* This String array will hold and help cache our weather data */
+            Cursor mTaskData = null;
 
+            /**
+             * Subclasses of AsyncTaskLoader must implement this to take care of loading their data.
+             */
+            @Override
+            protected void onStartLoading() {
+                if (mTaskData != null) {
+                    deliverResult(mTaskData);
+                } else {
+                    //mLoadingIndicator.setVisibility(View.VISIBLE);
+                    forceLoad();
+                }
+            }
 
-            /*
-            // previous; no sorting case
-            return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
-                    null, null, null, null);
-                    */
+            /**
+             * This is the method of the AsyncTaskLoader that will load and parse the JSON data
+             * from OpenWeatherMap in the background.
+             *
+             * @return Weather data from OpenWeatherMap as an array of Strings.
+             * null if an error occurs
+             */
+            @Override
+            public Cursor loadInBackground() {
 
-        //return null;
+                try {
+                    Cursor retCursor = getContentResolver().query(TaskContract.ItemEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            TaskContract.ItemEntry.COLUMN_PRIORITY);
+
+                    return retCursor;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            /**
+             * Sends the result of the load to the registered listener.
+             *
+             * @param data The result of the load
+             */
+            public void deliverResult(Cursor data) {
+                mTaskData = data;
+                super.deliverResult(data);
+            }
+        };
+
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //adapter..
-        mAdapter.swapCursor(data);
+        //
+        //
 
-    }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+        /**
+         * Called when a previously created loader has finished its load.
+         *
+         * @param loader The Loader that has finished.
+         * @param data The data generated by the Loader.
+         */
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            //mLoadingIndicator.setVisibility(View.INVISIBLE);
+            mAdapter.swapCursor(data);
+            if (null == data) {
+                //showErrorMessage();
+            } else {
+                //showWeatherDataView();
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
 
-        mAdapter.swapCursor(null);
+        /**
+         * Called when a previously created loader is being reset, and thus
+         * making its data unavailable.  The application should at this point
+         * remove any references it has to the Loader's data.
+         *
+         * @param loader The Loader that is being reset.
+         */
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+        /*
+         * We aren't using this method in our example application, but we are required to Override
+         * it to implement the LoaderCallbacks<String> interface
+         */
 
-    }
+            mAdapter.swapCursor(null);
+        }
+
 }
 
