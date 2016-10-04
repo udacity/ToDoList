@@ -11,11 +11,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import static com.example.udacity.todolist.data.TaskContract.ItemEntry.TABLE_NAME;
+import static com.example.udacity.todolist.data.TaskContract.TaskEntry.TABLE_NAME;
 
 public class TaskContentProvider extends ContentProvider {
 
-    public static final Uri CONTENT_URI = TaskContract.ItemEntry.CONTENT_URI; //public to access in main
+    public static final Uri CONTENT_URI = TaskContract.TaskEntry.CONTENT_URI; //public to access in main
 
 
     //1. Define URIs - what information do you want to access/display/insert/delete?
@@ -41,7 +41,7 @@ public class TaskContentProvider extends ContentProvider {
     //priority = ?
     private static final String sPrioritySelection =
             TABLE_NAME+
-                    "." + TaskContract.ItemEntry.COLUMN_PRIORITY + " = ? ";
+                    "." + TaskContract.TaskEntry.COLUMN_PRIORITY + " = ? ";
 
 
 
@@ -71,9 +71,9 @@ public class TaskContentProvider extends ContentProvider {
 
         switch (sUriMatcher.match(uri)) {
             case TASKS:
-                return TaskContract.ItemEntry.CONTENT_TYPE;
+                return TaskContract.TaskEntry.CONTENT_TYPE;
             case ONE_TASK:
-                return TaskContract.ItemEntry.CONTENT_ITEM_TYPE;
+                return TaskContract.TaskEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Uri match not recognized!");
                 //throw new UnsupportedOperationException("Not yet implemented");
@@ -215,7 +215,7 @@ public class TaskContentProvider extends ContentProvider {
             case TASKS:
                 break;
             case ONE_TASK:
-                //delete a single task b getting the id
+                //update a single task by getting the id
                 id = uri.getPathSegments().get(1);
                 //using selections
                 tasksUpdated = mTaskDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements
                 System.out.println("tag for itemView id:  " + myId);
 
                 //build appropriate uri with row id appended
-                Uri uri = TaskContract.ItemEntry.CONTENT_URI;
+                Uri uri = TaskContract.TaskEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath("" + myId).build();
 
                 //view uri for debug
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 } else {
                 */
-                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
+                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, TaskContract.TaskEntry.COLUMN_PRIORITY);
                 //}
                 mAdapter.swapCursor(c);
             }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements
 //            return;
 //        }
 //
-//        contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_NAME,
+//        contentValues.put(TaskContract.ItemEntry.COLUMN_DESCRIPTION,
 //                ((EditText) findViewById(R.id.editTextTaskName)).getText().toString());
 //
 //
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements
         // defines a one element String array to contain the selection argument
         String[] mSelectionArgs = {""};
 
-        mSelectionClause = TaskContract.ItemEntry.COLUMN_PRIORITY + " = ?";
+        mSelectionClause = TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?";
 
         // what row of priority do you want to select?
 
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements
                 null,
                 mSelectionClause,
                 mSelectionArgs,
-                TaskContract.ItemEntry.COLUMN_PRIORITY);
+                TaskContract.TaskEntry.COLUMN_PRIORITY);
 
         mAdapter.swapCursor(c);
 
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements
                 null,
                 null,
                 null,
-                TaskContract.ItemEntry.COLUMN_PRIORITY);
+                TaskContract.TaskEntry.COLUMN_PRIORITY);
 
         mAdapter.swapCursor(c);
     }
@@ -369,11 +369,11 @@ public class MainActivity extends AppCompatActivity implements
             public Cursor loadInBackground() {
 
                 try {
-                    Cursor retCursor = getContentResolver().query(TaskContract.ItemEntry.CONTENT_URI,
+                    Cursor retCursor = getContentResolver().query(TaskContract.TaskEntry.CONTENT_URI,
                             null,
                             null,
                             null,
-                            TaskContract.ItemEntry.COLUMN_PRIORITY);
+                            TaskContract.TaskEntry.COLUMN_PRIORITY);
 
                     return retCursor;
                 } catch (Exception e) {

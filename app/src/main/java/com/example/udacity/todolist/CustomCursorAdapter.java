@@ -35,9 +35,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // index of the ID column, title, author (0, 1, 2 -- autoincrement)
-        int idIndex = mCursor.getColumnIndex(TaskContract.ItemEntry._ID);
-        int titleIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_TASK_NAME);
-        int priorityIndex = mCursor.getColumnIndex(TaskContract.ItemEntry.COLUMN_PRIORITY);
+        int idIndex = mCursor.getColumnIndex(TaskContract.TaskEntry._ID);
+        int titleIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
+        int priorityIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
 

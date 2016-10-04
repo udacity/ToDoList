@@ -12,17 +12,17 @@ import android.database.sqlite.SQLiteQueryBuilder;
 public class TaskDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "TasksDb.db";
-    private static final String TABLE_NAME = TaskContract.ItemEntry.TABLE_NAME;
+    private static final String TABLE_NAME = TaskContract.TaskEntry.TABLE_NAME;
 
-    private static final int VERSION = 6;
+    private static final int VERSION = 7;
 
 
     // create SQL table (careful about formatting)
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    TaskContract.ItemEntry._ID + " INTEGER PRIMARY KEY, " +
-                    TaskContract.ItemEntry.COLUMN_TASK_NAME + " TEXT NOT NULL, " +
-                    TaskContract.ItemEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);";
+                    TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY, " +
+                    TaskContract.TaskEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                    TaskContract.TaskEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);";
 
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;

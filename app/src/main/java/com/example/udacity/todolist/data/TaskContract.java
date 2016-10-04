@@ -25,15 +25,15 @@ public class TaskContract {
     //total projection for getting a complete Cursor (for RecyclerView later)
 
     public static final String[] ALL_COLUMNS = new String[]{
-            ItemEntry._ID,
-            ItemEntry.COLUMN_TASK_NAME,
-            ItemEntry.COLUMN_PRIORITY
+            TaskEntry._ID,
+            TaskEntry.COLUMN_DESCRIPTION,
+            TaskEntry.COLUMN_PRIORITY
     };
 
 
     // Inner class that defines the table contents of the task table
 
-    public static final class ItemEntry implements BaseColumns {
+    public static final class TaskEntry implements BaseColumns {
 
 
         //4. create the URI that points to this table specifically
@@ -59,7 +59,7 @@ public class TaskContract {
 
         public static final String TABLE_NAME = "tasks";
 
-        public static final String COLUMN_TASK_NAME = "task_name";
+        public static final String COLUMN_DESCRIPTION = "description";
 
         public static final String COLUMN_PRIORITY = "priority";
 

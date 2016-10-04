@@ -44,11 +44,11 @@ public class AddTaskActivity extends AppCompatActivity {
             return;
         }
 
-        contentValues.put(TaskContract.ItemEntry.COLUMN_TASK_NAME,
+        contentValues.put(TaskContract.TaskEntry.COLUMN_DESCRIPTION,
                 input);
 
 
-        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);
+        contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, priority);
 
         // insert values through content resolver
         Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
