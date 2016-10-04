@@ -2,6 +2,8 @@ package com.example.udacity.todolist;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,34 +50,35 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         //set values
         holder.itemView.setTag(id);
-        holder.nameView.setText(title);
+        holder.taskDescriptionView.setText(title);
 
-        //handle visibility and priority markers
-        /*
-        if (priority == 1 || priority == 2 || priority == 3) {
-            holder.priorityView.setVisibility(View.VISIBLE);
-            holder.priorityView.setText(mContext.getString(R.string.boxed_priority, priority));
-        } else {
-            holder.priorityView.setVisibility(View.GONE);
-        }
-        */
 
-        // takes in context and ~instanceNum~ which in this case will be the priority
+        // Programmatically set text and color of priority marker
 
         holder.pMarker.setText(""+priority);
 
+        GradientDrawable priorityCircle = (GradientDrawable) holder.pMarker.getBackground();
+
+        // Get the appropriate background color based on the priority
+        int priorityColor = getPriorityColor(priority);
+        priorityCircle.setColor(priorityColor);
+
+    }
+
+    // Helper methods for selecting correct priority circle color
+    public int getPriorityColor(int priority) {
+        int priorityColor = 0;
 
         switch(priority) {
-            case 1: holder.pMarker.setBackgroundResource(R.drawable.circle1);
+            case 1: priorityColor = ContextCompat.getColor(mContext, R.color.materialRed);
                 break;
-            case 2: holder.pMarker.setBackgroundResource(R.drawable.circle2);
+            case 2: priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
                 break;
-            case 3: holder.pMarker.setBackgroundResource(R.drawable.circle3);
+            case 3: priorityColor = ContextCompat.getColor(mContext, R.color.materialGreen);
                 break;
-            default: holder.pMarker.setVisibility(View.INVISIBLE);
+            default: break;
         }
-
-
+        return priorityColor;
     }
 
 
@@ -126,19 +129,17 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     // inner class for view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView nameView;
+        public TextView taskDescriptionView;
 
         // priority drawable marker
         public TextView pMarker;
 
-        //public TextView priorityView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             // create constructor and initialize views
-            nameView = (TextView) itemView.findViewById(R.id.taskName);
+            taskDescriptionView = (TextView) itemView.findViewById(R.id.taskDescription);
             pMarker = (TextView) itemView.findViewById(R.id.priorityMarker);
-            //priorityView = (TextView) itemView.findViewById(R.id.androidPriorityText);
 
 
         }

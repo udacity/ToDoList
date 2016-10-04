@@ -1,6 +1,5 @@
 package com.example.udacity.todolist;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,33 +7,23 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.udacity.todolist.data.TaskContentProvider;
 import com.example.udacity.todolist.data.TaskContract;
 
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     //need to create custom adapter class first
     private CustomCursorAdapter mAdapter;
-
-    //
-
-    //private boolean isSorted; //initialized as false
-
-    //private int priority; // keep track of what priority is checked
 
     // to distinguish loader if you want to refer to it later
     private static final int TASK_LOADER_ID = 0;
@@ -95,16 +84,7 @@ public class MainActivity extends AppCompatActivity implements
         }).attachToRecyclerView(mRecyclerView);
 
 
-        // initialize to Priority = 1
-        /*
-        ((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
-        priority = 1; // init to P1
-        */
 
-        // set up loader (OLD)
-        //getSupportLoaderManager().restartLoader(0, null, this);
-
-        //setup (NEW)
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
@@ -143,55 +123,6 @@ public class MainActivity extends AppCompatActivity implements
     }
     */
 
-//    /*public void onClickAddTask(View view) {
-//        ContentValues contentValues = new ContentValues();
-//
-//        // check if the input is empty (won't create an entry in this case)
-//        String input = ((EditText) findViewById(R.id.editTextTaskName)).getText().toString();
-//        if (input.length() == 0) {
-//            return;
-//        }
-//
-//        contentValues.put(TaskContract.ItemEntry.COLUMN_DESCRIPTION,
-//                ((EditText) findViewById(R.id.editTextTaskName)).getText().toString());
-//
-//
-//        if (((RadioButton) findViewById(R.id.firstButton)).isChecked()) {
-//            priority = 1;
-//        } else if (((RadioButton) findViewById(R.id.secondButton)).isChecked()) {
-//            priority = 2;
-//        } else if (((RadioButton) findViewById(R.id.thirdButton)).isChecked()) {
-//            priority = 3;
-//        }
-//
-//        contentValues.put(TaskContract.ItemEntry.COLUMN_PRIORITY, priority);
-//
-//        // insert values through content resolver
-//        Uri uri = getContentResolver().insert(TaskContentProvider.CONTENT_URI, contentValues);
-//
-//        //update cursor
-//        Cursor c;
-//
-//        System.out.println("SORTED?? : " + isSorted);
-//        if (isSorted) {
-//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
-//                    TaskContract.ItemEntry.COLUMN_PRIORITY);
-//
-//        } else {
-//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
-//        }
-//        mAdapter.swapCursor(c);
-//
-//        // show the uri that the inserted entry is in
-//        Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
-//
-//        //Set Edit text back to empty fields
-//        //((EditText) findViewById(R.id.editTextTaskName)).getText().clear();
-//
-//        // reset priority to 1
-//        //((RadioGroup) findViewById(R.id.priorityGroup)).clearCheck();
-//        //((RadioButton) findViewById(R.id.firstButton)).setChecked(true);
-//    }*/
 
 
     //radio button click code -- just to check it's working
@@ -200,37 +131,6 @@ public class MainActivity extends AppCompatActivity implements
         System.out.println("Clicked!");
 
     }
-
-    // sorting button function
-
-//    public void onClickSort(View view) {
-//
-//        // add button toggle behavior
-//        isSorted = !isSorted; // toggles from true <-> false
-//
-//        Cursor c;
-//
-//        if (isSorted) {
-//
-//            //TODO: sorting by priority - can have them test out different ways to sort
-//            String sortId = TaskContract.ItemEntry.COLUMN_PRIORITY;
-//            //System.out.println("Sort id = " + sortId);
-//
-//            //query the content provider for a new sorted cursor
-//            //should auto update bc of loader?
-//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-//                    null,
-//                    null,
-//                    null /* selection args need to test */,
-//                    sortId);
-//
-//        } else {
-//            // unsorted
-//            c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, null);
-//        }
-//        mAdapter.swapCursor(c);
-//    }
-
 
 
     // playing around with cursor display and selection args
@@ -274,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    //NEW -- for re-qerying after an insert (after resuming this activity!!)
+    // Re-queries after an insert, where this activity is always resumed
     @Override
     protected void onResume() {
         super.onResume();
@@ -290,52 +190,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
-
-    //------ Loader code -----
-
-    // Loaders will automatically update the view only if
-    // notifications are set!
-    /*
-    Could show student an insert (with a Toast) and how a view changes/doesn't change
-    based on including the cursor.setNotificationUri(getContext().getContentResolver(), uri);
-     */
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//
-//        //handle sorting
-//
-//        //loader sorts by priority
-//        return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
-//                null, null, null, TaskContract.ItemEntry.COLUMN_PRIORITY);
-//
-//
-//            /*
-//            // previous; no sorting case
-//            return new CursorLoader(getBaseContext(), TaskContentProvider.CONTENT_URI,
-//                    null, null, null, null);
-//                    */
-//
-//        //return null;
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        //adapter..
-//        mAdapter.swapCursor(data);
-//
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//
-//        mAdapter.swapCursor(null);
-//
-//    }
-
-
-
-    // NEW Loader code:
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
@@ -359,11 +213,8 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             /**
-             * This is the method of the AsyncTaskLoader that will load and parse the JSON data
-             * from OpenWeatherMap in the background.
+             * Loads all task data in the background
              *
-             * @return Weather data from OpenWeatherMap as an array of Strings.
-             * null if an error occurs
              */
             @Override
             public Cursor loadInBackground() {
@@ -426,11 +277,6 @@ public class MainActivity extends AppCompatActivity implements
          */
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-        /*
-         * We aren't using this method in our example application, but we are required to Override
-         * it to implement the LoaderCallbacks<String> interface
-         */
-
             mAdapter.swapCursor(null);
         }
 

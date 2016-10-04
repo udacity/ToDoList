@@ -2,15 +2,8 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
     <color name="colorAccent">#FF4081</color>
-
-    <!--copied from RecyclerView app - only need like 4 of these -->
-
-    <color name="material100Green">#C8E6C9</color>
-    <color name="material350Green">#74C177</color>
-    <color name="material600Green">#43A047</color>
-    <color name="material850Green">#256E29</color>
-
 
     <color name="materialRed">#EF5350</color>
     <color name="materialYellow">#FFCA28</color>

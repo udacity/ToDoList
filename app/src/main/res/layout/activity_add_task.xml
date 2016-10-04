@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:text="Add Task"
         android:padding="10dp"/>
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:text="Priority"
         android:padding="10dp"/>
 
@@ -115,8 +115,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="ADD"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:onClick="onClickAddTask"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:backgroundTint="@color/colorPrimaryLight"/>
 
 </LinearLayout>
