@@ -119,13 +119,7 @@ public class MainActivity extends AppCompatActivity implements
     public void selectAll(View view) {
 
         // re-queries for all tasks
-        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                null,
-                null,
-                null,
-                TaskContract.TaskEntry.COLUMN_PRIORITY);
-
-        mAdapter.swapCursor(c);
+        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
 
     }
 
@@ -133,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements
     //TODO: Select tasks by priority
     public void selectPriority1(View view) {
 
-        // references private helper method sleectByPriority
+        // references private helper method selectByPriority
         int priority = 1;
         selectByPriority(priority);
 
@@ -169,14 +163,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        //actually do something with those selection args (query then update)
-        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                null,
-                null,
-                null,
-                TaskContract.TaskEntry.COLUMN_PRIORITY);
-
-        mAdapter.swapCursor(c);
+        // re-queries for all tasks
+        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
 
