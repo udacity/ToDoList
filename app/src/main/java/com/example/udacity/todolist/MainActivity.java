@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements
     // to distinguish loader if you want to refer to it later
     private static final int TASK_LOADER_ID = 0;
 
-
     RecyclerView mRecyclerView;
 
     @Override
@@ -46,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(mAdapter);
 
 
-        //TODO: implement swipe delete
-
+        //TODO: Implement swipe delete
         // Add a touch helper to the recyclerview to handle swiping items off the db
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -69,16 +67,12 @@ public class MainActivity extends AppCompatActivity implements
 
                 getContentResolver().delete(uri, null, null);
 
-                Cursor c;
-                /*
-                if (isSorted) {
-                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null,
-                            TaskContract.ItemEntry.COLUMN_PRIORITY);
+                Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        TaskContract.TaskEntry.COLUMN_PRIORITY);
 
-                } else {
-                */
-                    c = getContentResolver().query(TaskContentProvider.CONTENT_URI, TaskContract.ALL_COLUMNS, null, null, TaskContract.TaskEntry.COLUMN_PRIORITY);
-                //}
                 mAdapter.swapCursor(c);
             }
         }).attachToRecyclerView(mRecyclerView);
@@ -92,11 +86,9 @@ public class MainActivity extends AppCompatActivity implements
          */
         getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
-
-
-        // *new* FAB launch new activity
-        // set an onClickListener
-
+        /*
+        FAB onClick listener that launches a new AddTaskActivity
+         */
         FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab);
 
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -124,45 +116,43 @@ public class MainActivity extends AppCompatActivity implements
     */
 
 
+    public void selectAll(View view) {
 
-    //radio button click code -- just to check it's working
-    public void onRadioButtonClicked(View view) {
-        //handle if a radio button is checked
-        System.out.println("Clicked!");
+        // re-queries for all tasks
+        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
+                null,
+                null,
+                null,
+                TaskContract.TaskEntry.COLUMN_PRIORITY);
+
+        mAdapter.swapCursor(c);
 
     }
 
 
-    // playing around with cursor display and selection args
-    // there is probably a more efficient way to do this, like a drop-down menu??
-    public void onClickSelection1(View view) {
+    //TODO: Select tasks by priority
+    public void selectPriority1(View view) {
 
-        // references private helper method onClickSelection
+        // references private helper method sleectByPriority
         int priority = 1;
-        onClickSelection(view, priority);
+        selectByPriority(priority);
 
     }
 
 
-    private void onClickSelection(View view, int priority) {
+    private void selectByPriority(int priority) {
         // create 1) selection clause and 2) corresponding args
         // this lets you choose rows based on a selection criteria
 
         // Defines a string to contain the selection clause
-        String mSelectionClause = null;
+        String mSelectionClause = TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?";
 
         // Initializes an array to contain selection arguments
         // defines a one element String array to contain the selection argument
-        String[] mSelectionArgs = {""};
+        String priorityString = "" + priority;
+        String[] mSelectionArgs = {priorityString};
 
-        mSelectionClause = TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?";
-
-        // what row of priority do you want to select?
-
-        //Could add this as an input parameter
-        mSelectionArgs[0] = ""+priority;
-
-        //actually do something with those selection args (query then update)
+        //Use these selection args in a query to update the display
         Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
                 null,
                 mSelectionClause,
@@ -174,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    // Re-queries after an insert, where this activity is always resumed
+    // Re-query after an insert, where this activity is always resumed
     @Override
     protected void onResume() {
         super.onResume();
@@ -196,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements
 
         return new AsyncTaskLoader<Cursor>(this) {
 
-            /* This String array will hold and help cache our weather data */
+            // This Cursor holds all our task data
             Cursor mTaskData = null;
 
             /**
@@ -213,20 +203,20 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             /**
-             * Loads all task data in the background
+             * TODO: Query and load all task data in the background
+             * TODO: Sort data by priority
              *
              */
             @Override
             public Cursor loadInBackground() {
 
                 try {
-                    Cursor retCursor = getContentResolver().query(TaskContract.TaskEntry.CONTENT_URI,
+                    return getContentResolver().query(TaskContract.TaskEntry.CONTENT_URI,
                             null,
                             null,
                             null,
                             TaskContract.TaskEntry.COLUMN_PRIORITY);
 
-                    return retCursor;
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -246,9 +236,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-        //
-        //
-
 
         /**
          * Called when a previously created loader has finished its load.
@@ -263,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements
             if (null == data) {
                 //showErrorMessage();
             } else {
-                //showWeatherDataView();
                 mRecyclerView.setVisibility(View.VISIBLE);
             }
         }

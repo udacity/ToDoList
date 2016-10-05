@@ -8,83 +8,63 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import static com.example.udacity.todolist.data.TaskContract.TaskEntry.TABLE_NAME;
 
+
+
+//TODO: 1. Create TaskContentProvider class that extends from ContentProvider
+//1.2. Add all necessary empty methods
+
 public class TaskContentProvider extends ContentProvider {
 
-    public static final Uri CONTENT_URI = TaskContract.TaskEntry.CONTENT_URI; //public to access in main
-
-
-    //1. Define URIs - what information do you want to access/display/insert/delete?
-
-    /* one for the whole table
-    one for a row (in this case a row that contains data about one task)
-    make a note: match Sunshine - these ints can be any value
-    convention is: if you have a main table, you call it 100,
-    and for multiple uri's in that table, do 101, 102, 103...
-    for a separate table, 200, 201, 202...
-     */
-    private static final int TASKS = 100;
-    private static final int ONE_TASK = 101;
-
-    //Uri matcher that we construct
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
-
-    //4.1 declare database so you can access it throughout (initialized in onCreate() )
+    //1.3. create a DbHelper class variable, so you can access it throughout your code
+    // this is initialized in the onCreate() method
     private TaskDbHelper mTaskDbHelper;
 
 
-    //9. Latest step - add selections! -
-    //priority = ?
-    private static final String sPrioritySelection =
-            TABLE_NAME+
-                    "." + TaskContract.TaskEntry.COLUMN_PRIORITY + " = ? ";
+    //3.1. Define the URIs and ints for them to match to
+
+    public static final Uri CONTENT_URI = TaskContract.TaskEntry.CONTENT_URI; //public to access in main
+
+    /* Define one final int for the directory of all tasks and one for a single item.
+    It is convention to use 100, 200, 300, etc for directories
+    and related ints (101, 102, ..) for items in that directory.
+     */
+    private static final int TASKS = 100;
+    private static final int TASK_WITH_ID = 101;
+
+    //3.2. Declare a class variable for the Uri matcher that you construct
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
 
 
-
-    // 2. Build the URI matcher - based on the URI int's you declared above!
-
+    //TODO: 3. Build the URI matcher - based on the URI int's you declared above
     private static UriMatcher buildUriMatcher() {
 
-        // All paths added to the UriMatcher have a corresponding code to return when a match is
-        // found.  The code passed into the constructor represents the code to return for the root
-        // URI.  It's common to use NO_MATCH as the code for this case.
+        /* 3.3. Initialize a UriMatcher with no initially set matches by passing in
+        the argument NO_MATCH to the constructor.
+         */
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        // For each kind of uri you may want to access, add the corresponding match code
-        // addUri(authority, path, int match code)
+        //All paths added to the UriMatcher have a corresponding int
+
+        //3.4. For each kind of uri you may want to access, add the corresponding match code
+        //by using the function: addUri(authority, path, int match code)
         uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS, TASKS);
-        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS + "/#", ONE_TASK);
+        uriMatcher.addURI(TaskContract.AUTHORITY, TaskContract.PATH_TASKS + "/#", TASK_WITH_ID);
         return uriMatcher;
     }
 
 
-    //3. Implement getType
-    // using URI matching (not used; will provide this method to the student)
-    @Override
-    public String getType(@NonNull Uri uri) {
-        // TODO: Implement this to handle requests for the MIME type of the data
-        // at the given URI.
+    //TODO: 1.1. Implement onCreate() to initialize your content provider on startup
 
-        switch (sUriMatcher.match(uri)) {
-            case TASKS:
-                return TaskContract.TaskEntry.CONTENT_TYPE;
-            case ONE_TASK:
-                return TaskContract.TaskEntry.CONTENT_ITEM_TYPE;
-            default:
-                throw new UnsupportedOperationException("Uri match not recognized!");
-                //throw new UnsupportedOperationException("Not yet implemented");
-        }
-    }
-
-
-    //4. Initialize provider and link it to database helper
-
+    /* onCreate() is where you should initialize anything you’ll need to setup
+    your underlying data source.
+    In this case, you’re working with a SQLite database, so you’ll need to
+    initialize a DbHelper to gain access to it.
+     */
     @Override
     public boolean onCreate() {
-        // TODO: Implement this to initialize your content provider on startup.
         Context context = getContext();
         mTaskDbHelper = new TaskDbHelper(context);
         return true;
@@ -92,23 +72,60 @@ public class TaskContentProvider extends ContentProvider {
     }
 
 
-    //5. Implement query
+
+    //TODO: 4. Implement insert to handle requests to insert a new row of data
 
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
-                        String[] selectionArgs, String sortOrder) {
-        // TODO: Implement this to handle query requests from clients.
+    public Uri insert(Uri uri, ContentValues values) {
 
-        //1. get access to db
+        //4.1. get access to our database (to write new data to)
+        final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
 
-        final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
+        Uri returnUri; // to be returned
 
-        Cursor retCursor;
-
+        //4.2. Matching code
         int match = sUriMatcher.match(uri);
 
         switch (match) {
             case TASKS:
+                //4.3. Insert into tasks table
+                long id = db.insert(TABLE_NAME, null, values);
+                if ( id > 0 )
+                    returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            //4.4. code default UnsupportedOperationException
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        //4.5. Notify the resolver that the uri has been changed
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        //4.6. return constructed uri (this points to the newly inserted row of data)
+        return returnUri;
+
+    }
+
+
+    //TODO: 5. Implement query to handle requests for data by URI.
+
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
+
+        //5.1. Get access to underlying database (read-only)
+        final SQLiteDatabase db = mTaskDbHelper.getReadableDatabase();
+
+        Cursor retCursor;
+
+        //5.2. URI match code
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case TASKS:
+                // 5.3. query for the tasks directory
                 retCursor =  db.query(TABLE_NAME,
                         projection,
                         selection,
@@ -117,103 +134,72 @@ public class TaskContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            // 5.4. default case should throw an UnsupportedOperationException
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        //NOTIFICATION and return cursor
 
+        //5.5. set a notification on the queried URI
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return retCursor;
 
-        //throw new UnsupportedOperationException("Not yet implemented");
+        //5.6. return the desired Cursor
+        return retCursor;
     }
 
 
-    //6. Write insert - show what happens with and w/o setting notifications!
+    //TODO: 6. Implement delete to delete a single row of data.
 
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        //throw new UnsupportedOperationException("Not yet implemented");
-        // check uri for validity
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
 
-        //1. get access to our database (to write new data to)
+        //6.1. get access to our database
         final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
 
-        Uri returnUri; // to be returned
+        // Keep track of the number of deleted tasks
+        int tasksDeleted = 0; // init as 0
+        String id;
 
-        //2. Matching code
+        //6.2. Match code
         int match = sUriMatcher.match(uri);
 
         switch (match) {
-            case TASKS:
-                long id = db.insert(TABLE_NAME, null, values);
-                if ( id > 0 )
-                    returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
-        //Notify
-        getContext().getContentResolver().notifyChange(uri, null);
-
-        // return constructed uri
-        return returnUri;
-
-    }
-
-    // 7. Implement delete (if you want?)
-    @Override
-    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        //throw new UnsupportedOperationException("Not yet implemented");
-
-        // keep track of if tasks are indeed deleted
-        int tasksDeleted = 0; // init as 0
-
-        String id;
-
-        switch (sUriMatcher.match(uri)) {
-            case TASKS:
-                break;
-            case ONE_TASK:
+            //6.3. handle single item case
+            case TASK_WITH_ID:
                 //delete a single task by getting the id
                 id = uri.getPathSegments().get(1);
                 //using selections
-                tasksDeleted = mTaskDbHelper.getWritableDatabase().delete(TABLE_NAME, "_id=?", new String[]{id});
+                tasksDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         if (tasksDeleted != 0) {
-            //a task was deleted
-            //Notify
+            //6.4. a task was deleted, set notification
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
+        //6.5. Return the number of tasks deleted
         return tasksDeleted;
     }
 
-    //8. Update
+
+    //TODO: 7. [Optional] Implement update to handle requests for updating a single row
+    // This function won't be used n our final app but is included for completeness
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String selection,
+    public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        //throw new UnsupportedOperationException("Not yet implemented");
 
-        //keep track of if an update occurs
+        //Keep track of if an update occurs
         int tasksUpdated = 0;
-
         String id;
 
-        switch (sUriMatcher.match(uri)) {
-            case TASKS:
-                break;
-            case ONE_TASK:
+        // match code
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case TASK_WITH_ID:
                 //update a single task by getting the id
                 id = uri.getPathSegments().get(1);
                 //using selections
@@ -224,11 +210,38 @@ public class TaskContentProvider extends ContentProvider {
         }
 
         if (tasksUpdated != 0) {
-            //Notify
+            //set notifications if a task was updated
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
+        // return number of tasks updated
         return tasksUpdated;
+    }
+
+
+    //TODO: [Optional] 8. Implement getType
+    /* getType() handles requests for the MIME type of data
+    We are working with two types of data:
+    1) a directory and 2) a single row of data.
+    This method will not be used in our app, but gives a way to standardize the data formats
+    that your provider accesses, and this can be useful for data organization.
+    For now, this method will not be used but will be provided for completeness.
+     */
+    @Override
+    public String getType(Uri uri) {
+
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case TASKS:
+                // directory
+                return TaskContract.TaskEntry.CONTENT_TYPE;
+            case TASK_WITH_ID:
+                // single item type
+                return TaskContract.TaskEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
 }

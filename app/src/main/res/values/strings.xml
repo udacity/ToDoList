@@ -1,11 +1,22 @@
 <resources>
     <string name="app_name">ToDoList</string>
-    <string name="add_a_new_task">Add a new task</string>
-    <string name="priority_1">Priority 1</string>
-    <string name="priority_3">Priority 3</string>
-    <string name="priority_2">Priority 2</string>
-    <string name="add_task">+ Add Task</string>
-    <string name="sort">Sort</string>
 
-    <string name="boxed_priority">[Priority: %d]</string>
+    <!-- Strings for MainActivity -->
+    <string name="priority_1">1</string>
+    <string name="priority_2">2</string>
+    <string name="priority_3">3</string>
+    <string name="select_1">P1</string>
+    <string name="select_all">Select All</string>
+
+    <!-- Strings for AddTaskActivity -->
+    <string name="task_description">Task</string>
+    <string name="edit_task_description">Describe your task...</string>
+    <string name="priority_string">Priority</string>
+
+    <string name="high_priority">High</string>
+    <string name="med_priority">Medium</string>
+    <string name="low_priority">Low</string>
+
+    <string name="add_button">Add</string>
+
 </resources>

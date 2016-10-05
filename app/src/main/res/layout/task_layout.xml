@@ -4,8 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.udacity.todolist.MainActivity">
-    <!-- layout height above should be wrap content, so that the items aren't SO spaced out -->
 
 
     <TextView
@@ -13,52 +18,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:padding="16dp"
-        android:textColor="#000000"
+        android:textColor="@android:color/primary_text_light"
         android:textSize="18sp" />
-    <!-- padding = a little bit of spacing between views -->
 
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- will programmatically color in adapter -->
+    <!-- The priority marker is a circle that is colored programmatically in the adapter code -->
     <TextView
         android:id="@+id/priorityMarker"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_gravity="center"
         android:textAlignment="center"
+        android:textColor="@android:color/primary_text_light"
         android:background="@drawable/priority_circle"/>
 
 
-    <!--<Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done"
-        android:layout_gravity="end"
-        android:onClick="deleteTask"/>-->
-
-
-    <!--set visible if COLUMN_PRIORITY = 1,2,3 (not 0) in adapter -->
-    <!--<TextView
-        android:id="@+id/androidPriorityText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:padding="5dp"
-        android:textColor="#0000FF"
-        android:textSize="18sp" />-->
-
-
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Swipe to delete"
-        android:layout_gravity="end"
-        android:padding="5dp"/>-->
-
-
 </LinearLayout>
+
+

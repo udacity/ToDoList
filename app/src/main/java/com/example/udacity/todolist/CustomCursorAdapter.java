@@ -54,8 +54,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
 
         // Programmatically set text and color of priority marker
-
-        holder.pMarker.setText(""+priority);
+        String priorityString = "" + priority; // converts int to String
+        holder.pMarker.setText(priorityString);
 
         GradientDrawable priorityCircle = (GradientDrawable) holder.pMarker.getBackground();
 
@@ -66,7 +66,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
     // Helper methods for selecting correct priority circle color
-    public int getPriorityColor(int priority) {
+    private int getPriorityColor(int priority) {
         int priorityColor = 0;
 
         switch(priority) {
