@@ -6,7 +6,7 @@
     <string name="priority_2">2</string>
     <string name="priority_3">3</string>
     <string name="select_1">P1</string>
-    <string name="select_all">Select All</string>
+    <string name="select_all">Show All</string>
 
     <!-- Strings for AddTaskActivity -->
     <string name="task_description">Task</string>
