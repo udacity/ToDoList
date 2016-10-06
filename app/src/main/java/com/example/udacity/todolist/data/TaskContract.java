@@ -61,6 +61,8 @@ public class TaskContract {
         The above table structure looks something like the sample table below.
         With the name of the table and columns on top, and potential contents in rows
 
+        Note: Because this implements BaseColumns, the _id column is generated automatically
+
         tasks
          - - - - - - - - - - - - - - - - - - - - - -
         | _id  |    description     |    priority   |

@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
             // The code in this method will be executed when the numbers category is clicked on.
             @Override
             public void onClick(View view) {
-                // Create a new intent to open the {@link NumbersActivity}
+                // Create a new intent to open the AddTaskActivity
                 Intent addTaskIntent = new Intent(MainActivity.this, AddTaskActivity.class);
 
                 // Start the new activity
@@ -115,47 +115,6 @@ public class MainActivity extends AppCompatActivity implements
     }
     */
 
-
-    public void selectAll(View view) {
-
-        // re-queries for all tasks
-        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
-
-    }
-
-
-    //TODO: Select tasks by priority
-    public void selectPriority1(View view) {
-
-        // references private helper method selectByPriority
-        int priority = 1;
-        selectByPriority(priority);
-
-    }
-
-
-    private void selectByPriority(int priority) {
-        // create 1) selection clause and 2) corresponding args
-        // this lets you choose rows based on a selection criteria
-
-        // Defines a string to contain the selection clause
-        String mSelectionClause = TaskContract.TaskEntry.COLUMN_PRIORITY + " = ?";
-
-        // Initializes an array to contain selection arguments
-        // defines a one element String array to contain the selection argument
-        String priorityString = "" + priority;
-        String[] mSelectionArgs = {priorityString};
-
-        //Use these selection args in a query to update the display
-        Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                null,
-                mSelectionClause,
-                mSelectionArgs,
-                TaskContract.TaskEntry.COLUMN_PRIORITY);
-
-        mAdapter.swapCursor(c);
-
-    }
 
 
     // Re-query after an insert, where this activity is always resumed

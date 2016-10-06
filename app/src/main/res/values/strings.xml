@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    <string name="main_activity_name">All Tasks</string>
+    <string name="add_task_activity_name">Add a New Task</string>
 
     <!-- Strings for MainActivity -->
     <string name="priority_1">1</string>

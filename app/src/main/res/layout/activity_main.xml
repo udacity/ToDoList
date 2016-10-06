@@ -14,37 +14,6 @@
     tools:context="com.example.udacity.todolist.MainActivity">
 
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <!-- Button for selecting all tasks -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/select_all"
-            android:onClick="selectAll"
-            android:background="@color/colorPrimaryLight"
-            android:layout_margin="8dp"/>
-
-        <!-- Button for Selecting highest priority (priority = 1) tasks -->
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/select_1"
-            android:onClick="selectPriority1"
-            android:background="@color/materialRed"
-            android:layout_margin="8dp"/>
-
-
-    </LinearLayout>
-
-
     <!-- FrameLayout that contains the RecyclerView of tasks and the "+" FAB -->
     <FrameLayout
         android:layout_width="match_parent"

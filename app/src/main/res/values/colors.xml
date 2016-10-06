@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- primary #3F51B5 , light #C5CAE9, dark #303F9F, accent #FF4081 -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimaryLight">#C5CAE9</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#303F9F</color>
 
-    <color name="materialRed">#EF5350</color>
-    <color name="materialYellow">#FFCA28</color>
-    <color name="materialGreen">#66BB6A</color>
+
+    <color name="materialRed">#e74c3c</color>
+    <color name="materialYellow">#e67e22</color>
+    <color name="materialGreen">#f1c40f</color>
 
 </resources>

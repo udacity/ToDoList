@@ -131,9 +131,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/add_button"
-        android:textSize="22dp"
+        android:textSize="18dp"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimaryLight"
+        android:textColor="@android:color/primary_text_dark"
+        android:background="@color/colorPrimary"
         android:onClick="onClickAddTask"/>
 
 </LinearLayout>

@@ -3,38 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp"
     tools:context="com.example.udacity.todolist.MainActivity">
 
-
-    <TextView
-        android:id="@+id/taskDescription"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@android:color/primary_text_light"
-        android:textSize="18sp" />
+        android:orientation="horizontal"
+        android:paddingBottom="4dp">
 
+
+        <TextView
+            android:id="@+id/taskDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- The priority marker is a circle that is colored programmatically in the adapter code -->
+        <TextView
+            android:id="@+id/priorityTextView"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/primary_text_light"
+            android:background="@drawable/priority_circle" />
+
+    </LinearLayout>
+
+
+    <!-- gray divider line -->
     <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- The priority marker is a circle that is colored programmatically in the adapter code -->
-    <TextView
-        android:id="@+id/priorityMarker"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
-        android:background="@drawable/priority_circle"/>
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
 
 </LinearLayout>

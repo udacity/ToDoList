@@ -10,62 +10,86 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+// Import the Contract class to aid in accessing constants
 import com.example.udacity.todolist.data.TaskContract;
 
-public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.ViewHolder> {
 
-    private Cursor mCursor; // create swapCursor method with this
+/**
+ * This CustomCursorAdapter creates and binds ViewHolders, that hold the description and priority of a task,
+ * to a RecyclerView to efficiently display data.
+ */
+public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.TaskViewHolder> {
+
+    // Class variables for the Cursor that holds task data and the Context
+    private Cursor mCursor;
     private Context mContext;
 
-
+    /**
+     * Constructor for the CustomCursorAdapter that initializes the Context.
+     *
+     * @param mContext the current Context
+     */
     public CustomCursorAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    //here is where you use the context passed in in the ^constructor
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+    /**
+     * Called when ViewHolders are created to fill a RecyclerView.
+     *
+     * @return A new TaskViewHolder that holds the view for each task
+     */
+    @Override
+    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.task_layout, parent, false);
 
-        return new ViewHolder(view);
-        //return null;
+        return new TaskViewHolder(view);
     }
 
+    /**
+     * Called by the RecyclerView to display data at a specified position in the Cursor.
+     *
+     * @param holder The ViewHolder to bind Cursor data to
+     * @param position The position of the data in the Cursor
+     */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(TaskViewHolder holder, int position) {
 
-        // index of the ID column, title, author (0, 1, 2 -- autoincrement)
+        // Indices for the _id, description, and priority columns
         int idIndex = mCursor.getColumnIndex(TaskContract.TaskEntry._ID);
-        int titleIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
+        int descriptionIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION);
         int priorityIndex = mCursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
-        //determine values
+        // Determine the values of the wanted data
         int id = mCursor.getInt(idIndex);
-        String title = mCursor.getString(titleIndex);
+        String description = mCursor.getString(descriptionIndex);
         int priority = mCursor.getInt(priorityIndex);
 
-        //set values
+        //Set values
         holder.itemView.setTag(id);
-        holder.taskDescriptionView.setText(title);
+        holder.taskDescriptionView.setText(description);
 
-
-        // Programmatically set text and color of priority marker
+        // Programmatically set the text and color for the priority TextView
         String priorityString = "" + priority; // converts int to String
-        holder.pMarker.setText(priorityString);
+        holder.priorityView.setText(priorityString);
 
-        GradientDrawable priorityCircle = (GradientDrawable) holder.pMarker.getBackground();
-
+        GradientDrawable priorityCircle = (GradientDrawable) holder.priorityView.getBackground();
         // Get the appropriate background color based on the priority
         int priorityColor = getPriorityColor(priority);
         priorityCircle.setColor(priorityColor);
 
     }
 
-    // Helper methods for selecting correct priority circle color
+
+    /*
+    Inner helper method for selecting the correct priority circle color.
+    P1 = red, P2 = yellow, P3 = green
+    */
     private int getPriorityColor(int priority) {
         int priorityColor = 0;
 
@@ -82,20 +106,21 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
 
+    /**
+     * Returns the number of items to display.
+     */
     @Override
     public int getItemCount() {
-
         if (mCursor == null) {
             return 0;
         }
         return mCursor.getCount();
     }
 
-    // helper method for changeCursor -- when there is no loader - to close the cursor!
-    /* In the non-loader case, this should..
-    1) be private
-    2)return the Cursor temp
-    3) changeCursor should be available
+
+    /**
+     * When data changes and a re-query occurs, this function swaps the old Cursor
+     * with a newly updated Cursor (Cursor c) that is passed in.
      */
     public Cursor swapCursor(Cursor c) {
         // check if this cursor is the same as the previous cursor (mCursor)
@@ -107,44 +132,29 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
         //check if this is a valid cursor, then update the cursor
         if (c != null) {
-            this.notifyDataSetChanged(); // notify bc of change!
+            this.notifyDataSetChanged();
         }
         return temp;
     }
 
-    //The real swapCursor - swaps AND closes the cursor
-    // uses private swap cursor and then closes the cursor, is this necessary??
 
-    //change and close
-    /*
-    public void changeCursor(Cursor c) {
-        //swap!
-        Cursor temp = swapCursor(c);
-        if (temp != null) {
-            temp.close(); // then close the old cursor if it exists (unnecessary clean up?)
-        }
-    }
-    */
+    // Inner class for creating ViewHolders
+    public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
-    // inner class for view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        // Class variables for the task description and priority TextViews
         public TextView taskDescriptionView;
+        public TextView priorityView;
 
-        // priority drawable marker
-        public TextView pMarker;
-
-
-        public ViewHolder(View itemView) {
+        /**
+         * Constructor for our TaskViewHolders.
+         *
+         * @param itemView The view inflated in onCreateViewHolder
+         */
+        public TaskViewHolder(View itemView) {
             super(itemView);
-            // create constructor and initialize views
+
             taskDescriptionView = (TextView) itemView.findViewById(R.id.taskDescription);
-            pMarker = (TextView) itemView.findViewById(R.id.priorityMarker);
-
-
+            priorityView = (TextView) itemView.findViewById(R.id.priorityTextView);
         }
-
     }
-
-
 }
