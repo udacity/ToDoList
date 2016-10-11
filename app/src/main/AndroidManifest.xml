@@ -10,8 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.udacity.todolist.MainActivity"
-            android:label="@string/main_activity_name">
+
+        <!-- The manifest entry for the MainActivity -->
+        <activity android:name="com.example.udacity.todolist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,14 +25,12 @@
             android:name=".AddTaskActivity"
             android:label="@string/add_task_activity_name" />
 
-
-        <!-- Make sure that the provider is registered -->
-        <!-- Make sure it's INSIDE the application tag -->
+        <!-- Registering the TaskContentProvider -->
         <provider
             android:name="com.example.udacity.todolist.data.TaskContentProvider"
             android:authorities="com.example.udacity.todolist"
-            android:enabled="true"
-            android:exported="false" />
+            android:exported="false"/>
+
     </application>
 
 </manifest>

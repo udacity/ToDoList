@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import static com.example.udacity.todolist.data.TaskContract.TaskEntry.TABLE_NAME;
 
@@ -23,7 +24,7 @@ public class TaskContentProvider extends ContentProvider {
     private TaskDbHelper mTaskDbHelper;
 
 
-    //3.1. Define the URIs and ints for them to match to
+    //3.1. Define the URIs and ints for them to match with
 
     public static final Uri CONTENT_URI = TaskContract.TaskEntry.CONTENT_URI; //public to access in main
 
@@ -76,7 +77,7 @@ public class TaskContentProvider extends ContentProvider {
     //TODO: 4. Implement insert to handle requests to insert a new row of data
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
 
         //4.1. get access to our database (to write new data to)
         final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
@@ -112,7 +113,7 @@ public class TaskContentProvider extends ContentProvider {
     //TODO: 5. Implement query to handle requests for data by URI.
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
         //5.1. Get access to underlying database (read-only)
@@ -150,7 +151,7 @@ public class TaskContentProvider extends ContentProvider {
     //TODO: 6. Implement delete to delete a single row of data.
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
 
         //6.1. get access to our database
         final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
@@ -185,10 +186,10 @@ public class TaskContentProvider extends ContentProvider {
 
 
     //TODO: 7. [Optional] Implement update to handle requests for updating a single row
-    // This function won't be used n our final app but is included for completeness
+    // This function won't be used in our final app but is included for completeness
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
+    public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
 
         //Keep track of if an update occurs
@@ -228,7 +229,7 @@ public class TaskContentProvider extends ContentProvider {
     For now, this method will not be used but will be provided for completeness.
      */
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
 
         int match = sUriMatcher.match(uri);
 

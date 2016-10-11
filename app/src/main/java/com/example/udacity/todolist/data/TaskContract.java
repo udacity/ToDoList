@@ -5,13 +5,16 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 
-//TODO: 2. Add Provider URI's to the Contract
-
-/* Clients need to know how to access the task data,
-and it's your job to provide the content URI's for each path to that data.
- */
-
 public class TaskContract {
+
+    /*
+     Clients need to know how to access the task data, and it's your job to provide
+     the content URI's for the path to that data.
+    */
+    // TODO: 2.0 Add content provider constants to the Contract:  1) Content authority,
+    // TODO: 2) Base content URI,
+    // TODO: 3) Path to the tasks directory
+    // TODO: 4) CONTENT_URI in the TaskEntry class
 
     //2.1. Specify the authority, which is how your code knows which Content Provider to access
     public static final String AUTHORITY = "com.example.udacity.todolist";
@@ -21,9 +24,7 @@ public class TaskContract {
 
     //2.3. Define the possible paths for accessing data in this contract
     // Each path should correspond to a single directory
-
     public static final String PATH_TASKS = "tasks"; // has the same name as the "tasks" table
-
 
 
     // TaskEntry is an inner class that defines the contents of the task table
@@ -35,25 +36,12 @@ public class TaskContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_TASKS).build();
 
 
-        //(Included) MIME types for a directory and a single item of data
-
-        /* There are generally two MIME types of data we will be working with:
-        1) a directory of items, which can be a row or set of rows
-        OR 2) a single item, which is a single row of data
-         */
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
-
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
-
-
-        //Table and column names
-
+        // Task table and column names
         public static final String TABLE_NAME = "tasks";
 
+        // Since TaskEntry implements the interface "BaseColumns", it has an automatically produced
+        // "_ID" column in addition to the two below
         public static final String COLUMN_DESCRIPTION = "description";
-
         public static final String COLUMN_PRIORITY = "priority";
 
 
@@ -79,6 +67,20 @@ public class TaskContract {
          - - - - - - - - - - - - - - - - - - - - - -
 
          */
+
+
+        /*
+         (Included) MIME types used in TaskContentProvider's getType() method .
+         There are generally two MIME types of data we will be working with:
+           1) a directory of items, which can be a row or set of rows
+           OR 2) a single item, which is a single row of data
+         */
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
 
     }
 }

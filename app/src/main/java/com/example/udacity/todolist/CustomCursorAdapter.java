@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-// Import the Contract class to aid in accessing constants
 import com.example.udacity.todolist.data.TaskContract;
 
 
@@ -23,6 +22,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     // Class variables for the Cursor that holds task data and the Context
     private Cursor mCursor;
     private Context mContext;
+
 
     /**
      * Constructor for the CustomCursorAdapter that initializes the Context.
@@ -49,6 +49,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return new TaskViewHolder(view);
     }
 
+
     /**
      * Called by the RecyclerView to display data at a specified position in the Cursor.
      *
@@ -66,7 +67,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
         // Determine the values of the wanted data
-        int id = mCursor.getInt(idIndex);
+        final int id = mCursor.getInt(idIndex);
         String description = mCursor.getString(descriptionIndex);
         int priority = mCursor.getInt(priorityIndex);
 
@@ -87,8 +88,8 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
 
     /*
-    Inner helper method for selecting the correct priority circle color.
-    P1 = red, P2 = yellow, P3 = green
+    Helper method for selecting the correct priority circle color.
+    P1 = red, P2 = orange, P3 = yellow
     */
     private int getPriorityColor(int priority) {
         int priorityColor = 0;
@@ -96,9 +97,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         switch(priority) {
             case 1: priorityColor = ContextCompat.getColor(mContext, R.color.materialRed);
                 break;
-            case 2: priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
+            case 2: priorityColor = ContextCompat.getColor(mContext, R.color.materialOrange);
                 break;
-            case 3: priorityColor = ContextCompat.getColor(mContext, R.color.materialGreen);
+            case 3: priorityColor = ContextCompat.getColor(mContext, R.color.materialYellow);
                 break;
             default: break;
         }
@@ -139,14 +140,14 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
 
 
     // Inner class for creating ViewHolders
-    public static class TaskViewHolder extends RecyclerView.ViewHolder {
+    class TaskViewHolder extends RecyclerView.ViewHolder {
 
         // Class variables for the task description and priority TextViews
-        public TextView taskDescriptionView;
-        public TextView priorityView;
+        TextView taskDescriptionView;
+        TextView priorityView;
 
         /**
-         * Constructor for our TaskViewHolders.
+         * Constructor for the TaskViewHolders.
          *
          * @param itemView The view inflated in onCreateViewHolder
          */
