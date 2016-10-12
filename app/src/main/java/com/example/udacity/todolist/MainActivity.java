@@ -15,7 +15,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 
-import com.example.udacity.todolist.data.TaskContentProvider;
 import com.example.udacity.todolist.data.TaskContract;
 
 
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements
             // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // TODO: Implement swipe delete for a single item
+                // TODO: 9.1. Implement swipe delete for a single item
 
                 // Retrieve the id of the task to delete
                 int id = (int) viewHolder.itemView.getTag();
@@ -75,14 +74,8 @@ public class MainActivity extends AppCompatActivity implements
                 // Delete via a ContentResolver
                 getContentResolver().delete(uri, null, null);
 
-                // Re-query to update the display
-                Cursor c = getContentResolver().query(TaskContentProvider.CONTENT_URI,
-                        null,
-                        null,
-                        null,
-                        TaskContract.TaskEntry.COLUMN_PRIORITY);
-
-                mAdapter.swapCursor(c);
+                // TODO: 9.2. Re-query for all tasks after a deletion
+                getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, MainActivity.this);
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -153,9 +146,8 @@ public class MainActivity extends AppCompatActivity implements
             // loadInBackground() performs asynchronous loading of data
             @Override
             public Cursor loadInBackground() {
-                //TODO: Query and load all task data in the background
+                //TODO: 6.5. Query and load all task data in the background; sort by priority
                 //Hint: use a try/catch block to catch any errors in loading data
-                //TODO: Sort that data by priority
 
                 try {
                     return getContentResolver().query(TaskContract.TaskEntry.CONTENT_URI,

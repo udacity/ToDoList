@@ -39,10 +39,8 @@ public class AddTaskActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: Retrieve user input and store it in a ContentValues object
-        // TODO: Insert new task data via a ContentResolver
-        // TODO: Display the URI that's returned by a call to insert() with a Toast
-        // TODO: Call finish() to return back to MainActivity after an insert is completed
+        // TODO: 5.6. Retrieve user input and store it in a ContentValues object
+        // [Hint] Don't forget to call finish() to return to MainActivity after this insert is complete
 
         // Create new empty ContentValues object
         ContentValues contentValues = new ContentValues();
@@ -51,10 +49,10 @@ public class AddTaskActivity extends AppCompatActivity {
         contentValues.put(TaskContract.TaskEntry.COLUMN_DESCRIPTION, input);
         contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, mPriority);
 
-        // Insert values through a content resolver
+        // TODO: 5.7. Insert new task data via a ContentResolver
         Uri uri = getContentResolver().insert(TaskContract.TaskEntry.CONTENT_URI, contentValues);
 
-        // Use a Toast to show the uri that the inserted entry is in
+        // TODO: 5.8. Display the URI that's returned with a Toast
         if(uri != null) {
             Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }

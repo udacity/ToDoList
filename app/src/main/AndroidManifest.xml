@@ -25,7 +25,9 @@
             android:name=".AddTaskActivity"
             android:label="@string/add_task_activity_name" />
 
-        <!-- Registering the TaskContentProvider -->
+        <!-- TODO: 2.1. Register the TaskContentProvider -->
+        <!-- TODO: 2.2. Set name, authorities, and exported attributes -->
+        <!-- exported = false limits access to this ContentProvider to only this app -->
         <provider
             android:name="com.example.udacity.todolist.data.TaskContentProvider"
             android:authorities="com.example.udacity.todolist"

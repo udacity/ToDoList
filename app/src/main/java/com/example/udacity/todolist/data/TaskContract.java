@@ -7,34 +7,32 @@ import android.provider.BaseColumns;
 
 public class TaskContract {
 
-    /*
+    /* TODO: 3.1. Add content provider constants to the Contract
      Clients need to know how to access the task data, and it's your job to provide
-     the content URI's for the path to that data.
-    */
-    // TODO: 2.0 Add content provider constants to the Contract:  1) Content authority,
-    // TODO: 2) Base content URI,
-    // TODO: 3) Path to the tasks directory
-    // TODO: 4) CONTENT_URI in the TaskEntry class
+     these content URI's for the path to that data:
+        1) Content authority,
+        2) Base content URI,
+        3) Path(s) to the tasks directory
+        4) Content URI for data in the TaskEntry class
+     */
 
-    //2.1. Specify the authority, which is how your code knows which Content Provider to access
+    // The authority, which is how your code knows which Content Provider to access
     public static final String AUTHORITY = "com.example.udacity.todolist";
 
-    //2.2. Define the base content URI = "content://" + <authority>
+    // The base content URI = "content://" + <authority>
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-    //2.3. Define the possible paths for accessing data in this contract
-    // Each path should correspond to a single directory
-    public static final String PATH_TASKS = "tasks"; // has the same name as the "tasks" table
+    // Define the possible paths for accessing data in this contract
+    // This is the path for the "tasks" directory
+    public static final String PATH_TASKS = "tasks";
 
 
-    // TaskEntry is an inner class that defines the contents of the task table
+    /* TaskEntry is an inner class that defines the contents of the task table */
     public static final class TaskEntry implements BaseColumns {
 
-        //2.4. Create the content URI that points to this directory
-        // content URI = base content URI + path
+        // TaskEntry content URI = base content URI + path
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_TASKS).build();
-
 
         // Task table and column names
         public static final String TABLE_NAME = "tasks";
