@@ -13,7 +13,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "TasksDb.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 9;
+    private static final int VERSION = 10;
 
 
     // Constructor

@@ -74,10 +74,10 @@ public class TaskContract {
            OR 2) a single item, which is a single row of data
          */
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
 
-        public static final String CONTENT_ITEM_TYPE =
+        static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + AUTHORITY + "/" + PATH_TASKS;
 
     }

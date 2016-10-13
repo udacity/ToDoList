@@ -22,8 +22,8 @@ public class TaskContentProvider extends ContentProvider {
     // TODO: 4.1. Define final integer constants for the directory of tasks and a single item.
     // It's convention to use 100, 200, 300, etc for directories,
     // and related ints (101, 102, ..) for items in that directory.
-    private static final int TASKS = 100;
-    private static final int TASK_WITH_ID = 101;
+    public static final int TASKS = 100;
+    public static final int TASK_WITH_ID = 101;
 
     // TODO: 4.2. Declare a static variable for the Uri matcher that you construct
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -34,7 +34,7 @@ public class TaskContentProvider extends ContentProvider {
      Initialize a new matcher object without any matches,
      then use .addURI(String authority, String path, int match) to add matches
       */
-    private static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
 
         // Initialize a UriMatcher with no matches by passing in NO_MATCH to the constructor
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -174,7 +174,7 @@ public class TaskContentProvider extends ContentProvider {
         // Get access to our database
         final SQLiteDatabase db = mTaskDbHelper.getWritableDatabase();
         // Keep track of the number of deleted tasks
-        int tasksDeleted = 0; // init as 0
+        int tasksDeleted; // init as 0
 
         // Match code
         int match = sUriMatcher.match(uri);
@@ -210,7 +210,7 @@ public class TaskContentProvider extends ContentProvider {
                       String[] selectionArgs) {
 
         //Keep track of if an update occurs
-        int tasksUpdated = 0;
+        int tasksUpdated;
 
         // match code
         int match = sUriMatcher.match(uri);
