@@ -14,7 +14,7 @@ import com.example.udacity.todolist.data.TaskContract;
 
 public class AddTaskActivity extends AppCompatActivity {
 
-    // Declare a member variable to keep track of a task's selected mPriority
+    // Declare a member variable to keep track of a task's selected priority
     private int mPriority;
 
 
